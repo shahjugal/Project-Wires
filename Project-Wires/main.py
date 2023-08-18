@@ -6,6 +6,9 @@ from Models.Follower import Follower
 from Models.Likes import Like
 from Models.Retweets import Retweet
 from sqlalchemy.orm import sessionmaker
+from UtilityTools.AuthenticationUtil import Authentication
+from UtilityTools.ProfileUtil import Profile
+from UtilityTools.TokenUtility import TokenUtility
 from DBHelper import SessionLocal, engine, Base
 
 if __name__ == "__main__":
@@ -14,29 +17,102 @@ if __name__ == "__main__":
     
     db:Session = Session(engine)
 
-    # user = User(first_name= "Ramesh", last_name = "Suresh", username="rameshsdfguresh", email="ramesh@surdfgesh.com", password="NewPassowdz")
+    #-----------------------Auth Testing
 
-    # db.add(user)
-    # db.commit()
-    # db.refresh(user)
+    # try:
+    #     user = Authentication.sign_up(db=db, first_name="max", last_name="min", username="MinIMax", email="MinAAMax@sgsd.sdc", password="MicroMax", profile_image="https://thumbs.dreamstime.com/z/drawing-maniac-cartoon-image-creature-61681157.jpg")
+    #     print(f"Registered a user with username {user.username}")
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
 
-    # user = db.query(User).filter(User.id == 2).first()
+    # try:
+    #     res = Authentication.sign_in(db=db, query=user.username, password="MicroMax")
+    #     print(f"Authenticated with this JWT: {res}!")
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
 
-    # new_tweet = Tweet(author_id=2, content="We are releasing out movie RRR")
+    # try:
+    #     Authentication.password_reset(db=db, id=user.id, new_password="MicroMin")
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
 
-    # db.add(new_tweet)
-    # db.commit()
-    # db.refresh(new_tweet)
+    # try:
+    #     res = Authentication.sign_in(db=db, query=user.username, password="MicroMax")
+    #     print(f"Authenticated with this JWT: {res}!")
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
 
-    
+    # try:
+    #     res = Authentication.sign_in(db=db, query=user.username, password="MicroMin")
+    #     print(f"Authenticated with this JWT: {res}!")
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
 
-    new_following = Follower(followee_id = 4, follower_id = 5)
 
-    db.add(new_following)
-    db.commit()
-    db.refresh(new_following)
+    #-------------------------------------
 
-    # users = db.query(User).all()
+    # -------- Profile Testing -----------
+
+    # try:
+    #     print(Profile.retrieve_user_profile(db=db, identifier="shahjugalr"))
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+    # try:
+    #     print("Followers: " + Profile.get_followers(db=db, user_id=1).__str__())
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+    # try:
+    #     print("Follows: " + Profile.get_followings(db=db, user_id=1).__str__())
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+
+    # try:
+    #     Profile.follow_user(db=db, followee_id=1, follower_id=2)
+    #     print("Now User_id 1 follows User_id 2")
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+    # try:
+    #     Profile.follow_user(db=db, followee_id=2, follower_id=3)
+    #     print("Now User_id 2 follows User_id 3")
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+
+    # try:
+    #     Profile.unfollow_user(db=db, followee_id=1, follower_id=2)
+    #     print("Now User_id 1 unfollowed User_id 2")
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+    # try:
+    #     Profile.unfollow_user(db=db, followee_id=1, follower_id=2)
+    #     print("Now User_id 1 unfollowed User_id 2")
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+    # try:
+    #     Profile.follow_user(db=db, followee_id=2, follower_id=3)
+    #     print("Now User_id 2 follows User_id 3")
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+
+    try:
+        res = Profile.search_users(db=db, keyword='Sanjay')
+        print(res)
+    except Exception as exception:
+        print(f"ERR: {exception}")
+
+
+
+
+    # ------------------------------------
+
+    users = db.query(User).all()
 
     db.close()
 

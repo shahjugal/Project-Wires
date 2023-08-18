@@ -10,5 +10,5 @@ class Tweet(Base):
     parent_tweet_id = Column(Integer, ForeignKey("tweets.id"), nullable=True, default=text('NULL'))
     created_at = Column(TIMESTAMP(timezone=True), default=text('now()'), nullable=False)
     modified_at = Column(TIMESTAMP(timezone=True), default=text('now()') , nullable=False)
-
+    
     

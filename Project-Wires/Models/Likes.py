@@ -7,3 +7,5 @@ class Like(Base):
     # id = Column(Integer, nullable=False, autoincrement=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, primary_key=True)
     tweet_id = Column(Integer, ForeignKey("tweets.id", ondelete="CASCADE"), nullable=False, primary_key=True)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'), nullable=False)
+    

@@ -13,5 +13,4 @@ class User(Base):
     modified_at = Column(TIMESTAMP(timezone=True), server_default=text('now()') , nullable=False)
     password = Column(String, nullable=False)
     profile_image = Column(String, default="https://img.freepik.com/free-icon/user_318-563642.jpg", nullable=False)
-
-    # tweets = relationship('Tweet')
+    
