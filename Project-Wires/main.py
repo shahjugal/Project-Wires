@@ -7,9 +7,10 @@ from Models.Likes import Like
 from Models.Retweets import Retweet
 from sqlalchemy.orm import sessionmaker
 from UtilityTools.AuthenticationUtil import Authentication
+from UtilityTools.TweetUtil import TweetUtil
 from UtilityTools.ProfileUtil import Profile
 from UtilityTools.TokenUtility import TokenUtility
-from DBHelper import SessionLocal, engine, Base
+from DBHelper import engine, Base
 
 if __name__ == "__main__":
 
@@ -101,11 +102,73 @@ if __name__ == "__main__":
     #     print(f"ERR: {exception}")
 
 
+    # try:
+    #     res = Profile.search_users(db=db, keyword='Sanjay')
+    #     print(res)
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+
+    # try:
+    #     tweet = TweetUtil.create_tweet(db=db, user_id = 1, content="This is my first tweet")
+    #     print(f'Created tweet with id: {tweet}')
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+
+    # try:
+    #     tweet = TweetUtil.read_tweet(db=db, tweet_id=1)
+    #     print(tweet)
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+    # try:
+    #     tweet = TweetUtil.update_tweet(db=db, tweet_id=1, new_content="This is my updated first tweet only!")
+    #     print(f'id: {tweet} update')
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+    
+    # try:
+    #     tweet = TweetUtil.delete_tweet(db=db, tweet_id=1)
+    #     print(f'id: {tweet} update')
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+
+    # try:
+    #     tweet = TweetUtil.like_tweet(db=db, tweet_id=2, user_id=5)
+    #     print(f'id: {tweet} update')
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+
+    # try:
+    #     tweet = TweetUtil.unlike_tweet(db=db, tweet_id=2, user_id=5)
+    #     print(f'id: {tweet} update')
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+
+    # try:
+    #     TweetUtil.retweet_tweet(db=db, tweet_id=2, user_id=5)
+    #     print(f'retweeted')
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
+
     try:
-        res = Profile.search_users(db=db, keyword='Sanjay')
-        print(res)
+        tweets = TweetUtil.search_tweets(db=db, keyword="e")
+        print(tweets)
     except Exception as exception:
         print(f"ERR: {exception}")
+
+
+    # try:
+    #     tweet = TweetUtil.unretweet(db=db, tweet_id=2, user_id=5)
+    #     print(f'id: {tweet} update')
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
+
 
 
 
