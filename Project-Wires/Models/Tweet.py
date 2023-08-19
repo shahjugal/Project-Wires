@@ -8,7 +8,7 @@ class Tweet(Base):
     content = Column(String, nullable=False)
     author_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     parent_tweet_id = Column(Integer, ForeignKey("tweets.id"), nullable=True, default=text('NULL'))
-    created_at = Column(TIMESTAMP(timezone=True), default=text('now()'), nullable=False)
-    modified_at = Column(TIMESTAMP(timezone=True), default=text('now()') , nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'), nullable=False)
+    modified_at = Column(TIMESTAMP(timezone=True), server_default=text('now()') , nullable=False)
     
     

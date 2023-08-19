@@ -1,3 +1,4 @@
+from fastapi import FastAPI
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import Session
 from Models.User import User
@@ -6,23 +7,34 @@ from Models.Follower import Follower
 from Models.Likes import Like
 from Models.Retweets import Retweet
 from sqlalchemy.orm import sessionmaker
+from PyDanticModels import RegisterInputModel
 from UtilityTools.AuthenticationUtil import Authentication
 from UtilityTools.TweetUtil import TweetUtil
 from UtilityTools.ProfileUtil import Profile
 from UtilityTools.TokenUtility import TokenUtility
 from DBHelper import engine, Base
+from Enpoints import Authentication as authEP, Profile as profEP, Tweet as tweetEP
+from DBHelper import db
+app = FastAPI()
+
+app.include_router(authEP.router)
+app.include_router(profEP.router)
+app.include_router(tweetEP.router)
 
 if __name__ == "__main__":
 
     Base.metadata.create_all(bind=engine)
     
-    db:Session = Session(engine)
+    
+
+    
 
     #-----------------------Auth Testing
 
     # try:
-    #     user = Authentication.sign_up(db=db, first_name="max", last_name="min", username="MinIMax", email="MinAAMax@sgsd.sdc", password="MicroMax", profile_image="https://thumbs.dreamstime.com/z/drawing-maniac-cartoon-image-creature-61681157.jpg")
-    #     print(f"Registered a user with username {user.username}")
+    #     new_user = RegisterInputModel( first_name="Kalp", last_name="Shah", email='ShahKalp@kalptool.com', password="MyNameIsKalp", profile_image="Null", username="shah.kalp")
+    #     user = Authentication.sign_up(db=db, new_user=new_user)
+    #     print(type(user))
     # except Exception as exception:
     #     print(f"ERR: {exception}")
 
@@ -156,11 +168,11 @@ if __name__ == "__main__":
     #     print(f"ERR: {exception}")
 
 
-    try:
-        tweets = TweetUtil.search_tweets(db=db, keyword="e")
-        print(tweets)
-    except Exception as exception:
-        print(f"ERR: {exception}")
+    # try:
+    #     tweets = TweetUtil.search_tweets(db=db, keyword="e")
+    #     print(tweets)
+    # except Exception as exception:
+    #     print(f"ERR: {exception}")
 
 
     # try:
