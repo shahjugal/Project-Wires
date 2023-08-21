@@ -53,9 +53,9 @@ class Authentication:
 
 
     @staticmethod
-    def edit_profile(db: Session, new_data: EditProfileInputModel) -> EditProfileOutputModel:
+    def edit_profile(db: Session, new_data: EditProfileInputModel, user_id: int) -> EditProfileOutputModel:
         """Returns a user object on success"""
-        user: User = db.query(User).filter_by(id=new_data.user_id).first()
+        user: User = db.query(User).filter_by(id=user_id).first()
         if user:
             if new_data.first_name:
                 user.first_name = new_data.first_name
@@ -68,13 +68,13 @@ class Authentication:
         raise Exception("No user exists with given user id.")
 
     @staticmethod
-    def password_reset(db: Session, new_cred: PasswordResetInputModel) -> PasswordResetOutputModel:
+    def password_reset(db: Session, new_cred: PasswordResetInputModel, user_id: int) -> PasswordResetOutputModel:
         """Returns a user object on success"""
-        id = TokenUtility.verify_token(new_cred.token)
-        user = db.query(User).filter_by(id=id).first()
+        
+        user = db.query(User).filter_by(id=user_id).first()
         if user:
             hashed_password = Authentication.hash_password(new_cred.new_password)
             user.password = hashed_password
             db.commit()
-            return PasswordResetOutputModel(id=id)
+            return PasswordResetOutputModel(id=user_id)
         raise Exception("No user exists with given user id.")

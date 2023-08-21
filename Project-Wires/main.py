@@ -14,8 +14,8 @@ from UtilityTools.ProfileUtil import Profile
 from UtilityTools.TokenUtility import TokenUtility
 from DBHelper import engine, Base
 from Enpoints import Authentication as authEP, Profile as profEP, Tweet as tweetEP
-from DBHelper import db
-app = FastAPI()
+from DBHelper import get_db
+app = FastAPI(title="Wires")
 
 app.include_router(authEP.router)
 app.include_router(profEP.router)
@@ -187,9 +187,9 @@ if __name__ == "__main__":
 
     # ------------------------------------
 
-    users = db.query(User).all()
+    # users = get_db.query(User).all()
 
-    db.close()
+    # get_db().close()
 
     # new_tweet = Tweet(content="This is My Commasdent on any Tweet", author_id = 2, parent_tweet_id = 1)
 

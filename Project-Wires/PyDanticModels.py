@@ -96,7 +96,6 @@ class LoginOutputModel(BaseModel):
 
 class PasswordResetInputModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    token: str
     new_password: str
 
 class PasswordResetOutputModel(BaseModel):
@@ -111,7 +110,6 @@ class PasswordResetOutputModel(BaseModel):
 ## Edit Profile
 
 class EditProfileInputModel(BaseModel):
-    user_id: int
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     profile_image: Optional[str] = None
