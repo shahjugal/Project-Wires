@@ -11,19 +11,19 @@ router = APIRouter(tags=['Auth Related'])
 
 @router.post("/user/register", response_model= RegistrationOutputModel)
 def user_register(db: Session = Depends(get_db), new_user: RegisterInputModel = Body(...)):
-    try:
+    # try:
         user = Authentication.sign_up(db=db, new_user=new_user)
         return user
-    except Exception as exception:
-        raise HTTPException(detail=str(exception), status_code=404)
+    # except Exception as exception:
+    #     raise HTTPException(detail=str(exception), status_code=404)
 
 @router.post("/user/login", response_model=LoginOutputModel)
 def user_login(db: Session = Depends(get_db), creds: LoginInputModel = Body(...)):
-    try:
+    # try:
         token = Authentication.sign_in(db=db, user_cred=creds)
         return token
-    except Exception as exception:
-        raise HTTPException(detail=str(exception), status_code=404)
+    # except Exception as exception:
+    #     raise HTTPException(detail=str(exception), status_code=404)
 
 @router.post("/user/logout", deprecated=True)
 def user_logout(db: Session = Depends(get_db)):
@@ -35,8 +35,8 @@ def user_logout(db: Session = Depends(get_db)):
 
 @router.patch("/user/reset-password", response_model=PasswordResetOutputModel)
 def user_reset_password(db: Session = Depends(get_db), new_cred: PasswordResetInputModel = Body(...), user_id: str = Depends(get_current_user)):
-    try:
+    # try:
         out = Authentication.password_reset(db=db, new_cred=new_cred, user_id=user_id)
         return out
-    except Exception as exception:
-        raise HTTPException(detail=str(exception), status_code=404)
+    # except Exception as exception:
+    #     raise HTTPException(detail=str(exception), status_code=404)

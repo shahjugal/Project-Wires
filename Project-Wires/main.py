@@ -7,7 +7,7 @@ from Models.Follower import Follower
 from Models.Likes import Like
 from Models.Retweets import Retweet
 from sqlalchemy.orm import sessionmaker
-from PyDanticModels import RegisterInputModel
+from PyDanticModels import CreateTweetInputModel, RegisterInputModel
 from UtilityTools.AuthenticationUtil import Authentication
 from UtilityTools.TweetUtil import TweetUtil
 from UtilityTools.ProfileUtil import Profile
@@ -26,9 +26,6 @@ if __name__ == "__main__":
     Base.metadata.create_all(bind=engine)
     
     
-
-    
-
     #-----------------------Auth Testing
 
     # try:

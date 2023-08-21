@@ -23,6 +23,7 @@ class TweetSmallDescOutput(BaseModel):
     retweet_count: int
     like_count: int
     comment_count: int
+    parent_tweet_id: Optional[int] = None
     content: str
 
 class UserDetailedOutput(BaseModel):
@@ -47,6 +48,7 @@ class TweetDetailedOutput(BaseModel):
     retweet_count: int
     like_count: int
     comment_count: int
+    parent_tweet_id: Optional[int] = None
     comment_tweets: List[TweetSmallDescOutput]
 
 
@@ -135,5 +137,23 @@ class RetrieveProfileOutput(UserDetailedOutput):
 
 ## Retr Profile End
 
+## Create Tweet 
 
+class CreateTweetInputModel(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    content: str
+
+class CreateTweetOutputModel(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    content: str
+    author_id: int
+    created_at:datetime
+
+## Create Tweet END
+
+
+class UpdateTweetInputModel(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    content: str
 

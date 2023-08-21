@@ -1,5 +1,7 @@
 import hashlib
 from typing import Optional
+
+from fastapi import HTTPException
 from Models.User import User
 from sqlalchemy.orm import Session
 
@@ -22,10 +24,10 @@ class Authentication:
         user_ByEmail = db.query(User).filter_by(email=new_user.email).first()
         
         if(user_ByEmail):
-            raise Exception("Email already in use")
+            raise HTTPException(detail="Email not available", status_code=400)
         
         elif(user_ByUsername):
-            raise Exception("Username already in use")
+            raise HTTPException(detail="Username not available", status_code=400)
 
         hashed_password = Authentication.hash_password(new_user.password)
         new_user = User(first_name=new_user.first_name, last_name=new_user.last_name, username=new_user.username, email=new_user.email, profile_image=new_user.profile_image, password=hashed_password)
@@ -49,7 +51,7 @@ class Authentication:
             token = TokenUtility.generate_token(user_id)
             return LoginOutputModel(token=token)
         else:
-            raise Exception("Invalid Credentials")
+            raise HTTPException(detail="Invalid Credentials", status_code=401)
 
 
     @staticmethod
@@ -65,7 +67,7 @@ class Authentication:
                 user.profile_image = new_data.profile_image
             db.commit()
             return EditProfileOutputModel.model_validate(user)
-        raise Exception("No user exists with given user id.")
+        raise HTTPException(detail="User not found", status_code=404)
 
     @staticmethod
     def password_reset(db: Session, new_cred: PasswordResetInputModel, user_id: int) -> PasswordResetOutputModel:
@@ -77,4 +79,4 @@ class Authentication:
             user.password = hashed_password
             db.commit()
             return PasswordResetOutputModel(id=user_id)
-        raise Exception("No user exists with given user id.")
+        raise HTTPException(detail="User not found", status_code=404)
