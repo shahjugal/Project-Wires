@@ -19,8 +19,8 @@ from DBHelper import get_db
 app = FastAPI(title="Project Wires", 
               version="0.0.1", 
               contact={'Developer': 'Jugal'}, 
-              description="This is twitter's educational clone. (We are not like zukku making commercial clones)", 
-              summary="This is a API Documentaion of minimal Twitter clone made by @shah.jugal and @bhattmohit25",
+              description="This is twitter's educational clone made by BhattMohit25 and JugalShah. (We are not like zukku making commercial clones)", 
+              summary="API Documentaion authored by Jugal Shah",
               docs_url='/api/v1/docs', 
               terms_of_service="https://opensource.org/license/gpl-3-0/",
               
