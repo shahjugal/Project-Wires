@@ -43,6 +43,6 @@ def profile_unfollow(id: int, db: Session = Depends(get_db), user_id: str = Depe
     # except Exception as exception:
     #     raise HTTPException(detail=str(exception), status_code=404)
 
-@router.get("/profile/search/{query}", response_model = list[UserSmallDescOutput])
+@router.get("/profile/search/{query}")
 def profile_search(query: str, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     return Profile.search_users(db=db, keyword=query)
