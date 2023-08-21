@@ -23,7 +23,7 @@ app = FastAPI(title="Project Wires",
               summary="API Documentaion authored by Jugal Shah",
               docs_url='/api/v1/docs', 
               terms_of_service="https://opensource.org/license/gpl-3-0/",
-              
+              redoc_url='/'
               )
 
 origins = [
