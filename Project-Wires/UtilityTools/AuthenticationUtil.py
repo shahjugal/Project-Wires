@@ -1,5 +1,7 @@
 import hashlib
+import os
 from typing import Optional
+from dotenv import load_dotenv
 
 from fastapi import HTTPException
 from Models.User import User
@@ -8,12 +10,15 @@ from sqlalchemy.orm import Session
 from PyDanticModels import EditProfileInputModel, EditProfileOutputModel, PasswordResetInputModel, PasswordResetOutputModel, RegisterInputModel, RegistrationOutputModel, LoginInputModel, LoginOutputModel
 from .TokenUtility import TokenUtility
 
+load_dotenv()
+SECRET_SALT_KEY = os.getenv('SECRET_SALT_KEY')
+
 class Authentication:
 
     @staticmethod
     def hash_password(password: str) -> str:
         # Hash the password using a secure hash algorithm
-        salt = "random_salt_here"  # Replace with a real salt
+        salt =  SECRET_SALT_KEY # Replace with a real salt
         hashed_password = hashlib.sha256((password + salt).encode()).hexdigest()
         return hashed_password
 

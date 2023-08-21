@@ -1,6 +1,10 @@
+import os
+from dotenv import load_dotenv
 from fastapi import HTTPException
 import jwt
 import datetime
+load_dotenv()
+SECRET_TOKEN_KEY = os.environ.get("SECRET_TOKEN_KEY")
 
 class TokenVerificationException(Exception):
     def __init__(self, code: int, message: str):
@@ -12,13 +16,13 @@ class TokenUtility:
     @staticmethod
     def generate_token(user_id: int) -> str:
         expiration = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
-        token = jwt.encode({"user_id": user_id, "exp": expiration}, "secret_key", algorithm="HS256")
+        token = jwt.encode({"user_id": user_id, "exp": expiration}, SECRET_TOKEN_KEY, algorithm="HS256")
         return token
     
     @staticmethod
     def verify_token(token: str) -> int:
         try:
-            payload = jwt.decode(token, "secret_key", algorithms=["HS256"])
+            payload = jwt.decode(token, SECRET_TOKEN_KEY, algorithms=["HS256"])
             user_id = payload.get("user_id")
             if user_id is not None:
                 return user_id

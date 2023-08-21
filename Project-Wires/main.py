@@ -3,6 +3,7 @@ from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import Session
 from Models.User import User
 from Models.Tweet import Tweet
+from fastapi.middleware.cors import CORSMiddleware
 from Models.Follower import Follower
 from Models.Likes import Like
 from Models.Retweets import Retweet
@@ -15,7 +16,29 @@ from UtilityTools.TokenUtility import TokenUtility
 from DBHelper import engine, Base
 from Enpoints import Authentication as authEP, Profile as profEP, Tweet as tweetEP
 from DBHelper import get_db
-app = FastAPI(title="Wires")
+app = FastAPI(title="Project Wires", 
+              version="0.0.1", 
+              contact={'Developer': 'Jugal'}, 
+              description="This is twitter's educational clone. (We are not like zukku making commercial clones)", 
+              summary="This is a API Documentaion of minimal Twitter clone made by @shah.jugal and @bhattmohit25",
+              docs_url='/api/v1/docs', 
+              terms_of_service="https://opensource.org/license/gpl-3-0/",
+              
+              )
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(authEP.router)
 app.include_router(profEP.router)
