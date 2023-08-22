@@ -172,7 +172,7 @@ class TweetUtil:
     
     @staticmethod
     def load_tweets(db: Session):
-        tweets_unprocessed = db.query(Tweet).all()
+        tweets_unprocessed = db.query(Tweet).filter_by(parent_tweet_id = None).all()
         tweets:List[TweetSmallDescOutput] = []
         if(len(tweets_unprocessed)==0):
             raise HTTPException("No tweets found.", status_code=400)

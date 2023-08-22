@@ -69,6 +69,6 @@ def tweet_load_all(db: Session = Depends(get_db), user_id: str = Depends(get_cur
 def tweet_comment(tweet_id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user), new_tweet :CreateTweetInputModel = Body(...)):
     return TweetUtil.create_tweet_comment(db=db, user_id=user_id, tweet_id=tweet_id, new_tweet=new_tweet)
 
-@router.delete("/tweet/comment/{comment_id}")
+@router.delete("/tweet/comment/{comment_id}", deprecated=True, summary="Use Delete tweet instead", description="Conventionally we used comments but now every comment is in itself a tweet so delete tweet will work for comments")
 def tweet_comment_delete(comment_id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     return TweetUtil.delete_tweet_comment(db=db, user_id=user_id, comment_id=comment_id)
