@@ -8,7 +8,7 @@ from UtilityTools.ProfileUtil import Profile
 from UtilityTools.TokenUtility import TokenUtility
 from sqlalchemy.orm import Session
 
-router = APIRouter(tags=['Profile Related'])
+router = APIRouter(tags=['Profile Related'], prefix='/api/v1')
 
 # Profile Operations
 @router.put("/profile/edit/", response_model=EditProfileOutputModel)

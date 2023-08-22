@@ -7,13 +7,15 @@ from fastapi import HTTPException
 from Models.User import User
 from sqlalchemy.orm import Session
 
-from PyDanticModels import EditProfileInputModel, EditProfileOutputModel, PasswordResetInputModel, PasswordResetOutputModel, RegisterInputModel, RegistrationOutputModel, LoginInputModel, LoginOutputModel
+from PyDanticModels import EditProfileInputModel, EditProfileOutputModel, PasswordResetInputModel, PasswordResetOutputModel, RegisterInputModel, RegistrationOutputModel, LoginInputModel, LoginOutputModel, Secret2FAOutputModel
+from UtilityTools.twoFAUtil import twoFAUTIL
 from .TokenUtility import TokenUtility
 
 load_dotenv()
 SECRET_SALT_KEY = os.getenv('SECRET_SALT_KEY')
 
 class Authentication:
+
 
     @staticmethod
     def hash_password(password: str) -> str:
@@ -47,14 +49,32 @@ class Authentication:
         hashed_password = Authentication.hash_password(user_cred.password)
         user_ByUsername = db.query(User).filter_by(username=user_cred.emailOrUsername, password=hashed_password).first()
         user_ByEmail = db.query(User).filter_by(email=user_cred.emailOrUsername, password=hashed_password).first()
+        
         if user_ByUsername:
-            user_id = user_ByUsername.id
-            token = TokenUtility.generate_token(user_id)
-            return LoginOutputModel(token=token)
+            token = TokenUtility.generate_token(user_ByUsername.id)
+            if (user_ByUsername.secret_key is None):
+                return LoginOutputModel(token=token)
+            else:
+                if user_cred.otp is None:
+                    raise HTTPException(detail="2FA Code Needed", status_code=400)
+                elif twoFAUTIL.verify(secret=user_ByUsername.secret_key, OTP=user_cred.otp):
+                    return LoginOutputModel(token=token)
+                else:
+                    raise HTTPException(detail="Invalid 2FA OTP", status_code=401)
+                    
+                
         elif user_ByEmail:
-            user_id = user_ByEmail.id
-            token = TokenUtility.generate_token(user_id)
-            return LoginOutputModel(token=token)
+            token = TokenUtility.generate_token(user_ByEmail.id)
+            if (user_ByEmail.secret_key is None):
+                return LoginOutputModel(token=token)
+            else:
+                if user_cred.otp is None:
+                    raise HTTPException(detail="2FA Code Needed", status_code=400)
+                elif twoFAUTIL.verify(secret=user_ByEmail.secret_key, OTP=user_cred.otp):
+                    return LoginOutputModel(token=token)
+                else:
+                    raise HTTPException(detail="Invalid 2FA OTP", status_code=401)
+                
         else:
             raise HTTPException(detail="Invalid Credentials", status_code=401)
 
@@ -85,3 +105,48 @@ class Authentication:
             db.commit()
             return PasswordResetOutputModel(id=user_id)
         raise HTTPException(detail="User not found", status_code=404)
+
+    @staticmethod
+    def enable2FA(db: Session, user_id: int) -> Secret2FAOutputModel:
+        """Enables 2FA for user"""
+        randomSecret = twoFAUTIL.generate_secret()
+
+        user: User = db.query(User).filter_by(id=user_id).first()
+        if user:
+            if user.secret_key is not None:
+                raise HTTPException(detail="Already Enabled 2FA", status_code=400)
+            user.secret_key = randomSecret
+            db.commit()
+            return Secret2FAOutputModel(url=twoFAUTIL.generate_secret_URL(for_user=user.email, secret=randomSecret)) 
+        raise HTTPException(detail="User not found", status_code=404)
+    
+    @staticmethod
+    def disable2FA(db: Session, user_id: int, otp: str) -> str:
+        """Disable 2FA for user"""
+        user: User = db.query(User).filter_by(id=user_id).first()
+        if user:
+            if user.secret_key is None:
+                raise HTTPException(detail="Already Disabled 2FA", status_code=400)
+            else:
+                if twoFAUTIL.verify(user.secret_key, otp):
+                    user.secret_key = None
+                    db.commit()
+                    return
+                else:
+                    raise HTTPException(detail="Wrong 2FA Code", status_code=400)
+        raise HTTPException(detail="User not found", status_code=404)
+
+    @staticmethod
+    def verify2FA(db: Session, user_id: int, otp: str) -> bool:
+        """verify 2FA for user""" 
+        user: User = db.query(User).filter_by(id=user_id).first()
+        if user:
+            if user.secret_key is None:
+                raise HTTPException(detail="2FA is Disabled", status_code=400)
+            else:
+                if twoFAUTIL.verify(user.secret_key, otp):
+                    return True
+                else:
+                    raise HTTPException(detail="Wrong 2FA Code", status_code=400)
+        raise HTTPException(detail="User not found", status_code=404)
+

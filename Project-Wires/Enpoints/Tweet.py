@@ -11,7 +11,7 @@ from UtilityTools.TweetUtil import TweetUtil
 from UtilityTools.HeaderSupport import get_current_user
 
 
-router = APIRouter(tags=['Tweet Related'])
+router = APIRouter(tags=['Tweet Related'], prefix='/api/v1')
 
 # Tweet Operations
 @router.post("/tweet/create", response_model= CreateTweetOutputModel)

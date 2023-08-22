@@ -84,6 +84,7 @@ class LoginInputModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     emailOrUsername: str
     password: str
+    otp: Optional[str] = None
 
 class LoginOutputModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -157,3 +158,12 @@ class UpdateTweetInputModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     content: str
 
+
+# 
+class Secret2FAOutputModel(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    url: str
+
+class twoFAInputModel(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    otp: str
