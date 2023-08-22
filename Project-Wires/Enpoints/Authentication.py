@@ -1,3 +1,4 @@
+from typing import Annotated, Optional
 from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy.orm import Session
 from Models import User
@@ -38,9 +39,9 @@ def user_logout(db: Session = Depends(get_db)):
     pass
 
 @router.delete("/user/deactivate")
-def user_deactivate(db: Session = Depends(get_db), user_id = Depends(get_current_user), otp: twoFAInputModel = Body(...)):
+def user_deactivate(db: Session = Depends(get_db), user_id = Depends(get_current_user), otp: Optional[twoFAInputModel] = Body(default=None)):
     """Deletes user account"""
-    Authentication.deactivate_profile(db=db, user_id=user_id, otp=otp.otp)
+    Authentication.deactivate_profile(db=db, user_id=user_id, otp=otp)
 
 @router.patch("/user/reset-password", response_model=PasswordResetOutputModel)
 def user_reset_password(db: Session = Depends(get_db), new_cred: PasswordResetInputModel = Body(...), user_id: str = Depends(get_current_user)):

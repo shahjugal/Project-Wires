@@ -7,7 +7,7 @@ from fastapi import HTTPException
 from Models.User import User
 from sqlalchemy.orm import Session
 
-from PyDanticModels import EditProfileInputModel, EditProfileOutputModel, PasswordResetInputModel, PasswordResetOutputModel, RegisterInputModel, RegistrationOutputModel, LoginInputModel, LoginOutputModel, Secret2FAOutputModel
+from PyDanticModels import EditProfileInputModel, EditProfileOutputModel, PasswordResetInputModel, PasswordResetOutputModel, RegisterInputModel, RegistrationOutputModel, LoginInputModel, LoginOutputModel, Secret2FAOutputModel, twoFAInputModel
 from UtilityTools.twoFAUtil import twoFAUTIL
 from .TokenUtility import TokenUtility
 
@@ -151,7 +151,7 @@ class Authentication:
         raise HTTPException(detail="User not found", status_code=404)
     
     @staticmethod
-    def deactivate_profile(db: Session, user_id: int, otp: str) -> EditProfileOutputModel:
+    def deactivate_profile(db: Session, user_id: int, otp: twoFAInputModel):
         """Deletes profile"""
         user = db.query(User).filter_by(id=user_id).first()
         if user is None:
@@ -163,9 +163,9 @@ class Authentication:
             return
 
         else:
-            if otp is None:
+            if otp is None or otp.otp is None:
                 raise HTTPException(detail="2FA Code Needed", status_code=401)
-            elif twoFAUTIL.verify(user.secret_key, otp):
+            elif twoFAUTIL.verify(user.secret_key, otp.otp):
                 db.delete(user)
                 db.commit()
                 return
