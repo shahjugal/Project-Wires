@@ -166,4 +166,4 @@ class Secret2FAOutputModel(BaseModel):
 
 class twoFAInputModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    otp: str
+    otp: Optional[str] = None

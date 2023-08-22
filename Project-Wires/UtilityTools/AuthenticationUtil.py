@@ -149,4 +149,26 @@ class Authentication:
                 else:
                     raise HTTPException(detail="Wrong 2FA Code", status_code=400)
         raise HTTPException(detail="User not found", status_code=404)
+    
+    @staticmethod
+    def deactivate_profile(db: Session, user_id: int, otp: str) -> EditProfileOutputModel:
+        """Deletes profile"""
+        user = db.query(User).filter_by(id=user_id).first()
+        if user is None:
+            raise HTTPException(detail="User not found", status_code=404)
 
+        if user.secret_key is None:
+            db.delete(user)
+            db.commit()
+            return
+
+        else:
+            if otp is None:
+                raise HTTPException(detail="2FA Code Needed", status_code=401)
+            elif twoFAUTIL.verify(user.secret_key, otp):
+                db.delete(user)
+                db.commit()
+                return
+            else:
+                raise HTTPException(detail="Wrong 2FA Code", status_code=400)
+        
