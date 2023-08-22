@@ -1,4 +1,4 @@
-from typing import Annotated, Optional
+from typing import  Optional
 from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy.orm import Session
 from Models import User
