@@ -8,7 +8,7 @@ from UtilityTools.ProfileUtil import Profile
 from UtilityTools.TokenUtility import TokenUtility
 from sqlalchemy.orm import Session
 
-router = APIRouter(tags=['Profile Related'], prefix='/api/v1')
+router = APIRouter(tags=['Profile'], prefix='/api/v1')
 
 # Profile Operations
 @router.put("/profile/edit/", response_model=EditProfileOutputModel)
@@ -39,7 +39,7 @@ def profile_follow(id: int, db: Session = Depends(get_db), user_id: str = Depend
     # except Exception as exception:
     #     raise HTTPException(detail=str(exception), status_code=404)
 
-@router.post("/profile/unfollow/{id}")
+@router.delete("/profile/unfollow/{id}")
 def profile_unfollow(id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
         """Used to un-follow passed user."""
     # try:

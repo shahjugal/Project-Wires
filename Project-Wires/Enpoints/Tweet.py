@@ -11,7 +11,7 @@ from UtilityTools.TweetUtil import TweetUtil
 from UtilityTools.HeaderSupport import get_current_user
 
 
-router = APIRouter(tags=['Tweet Related'], prefix='/api/v1')
+router = APIRouter(tags=['Tweet'], prefix='/api/v1')
 
 # Tweet Operations
 @router.post("/tweet/create", response_model= CreateTweetOutputModel)
@@ -42,7 +42,7 @@ def tweet_read(tweet_id: int, db: Session = Depends(get_db), user_id: str = Depe
 def tweet_retweet(tweet_id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     return TweetUtil.retweet_tweet(db=db, user_id=user_id, tweet_id=tweet_id)
 
-@router.post("/tweet/unretweet/{tweet_id}")
+@router.delete("/tweet/unretweet/{tweet_id}")
 def tweet_unretweet(tweet_id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     return TweetUtil.unretweet(db=db, user_id=user_id, tweet_id=tweet_id)
     pass
@@ -52,7 +52,7 @@ def tweet_like(tweet_id: int, db: Session = Depends(get_db), user_id: str = Depe
     return TweetUtil.like_tweet(db=db, user_id=user_id, tweet_id=tweet_id)
     
 
-@router.post("/tweet/unlike/{tweet_id}")
+@router.delete("/tweet/unlike/{tweet_id}")
 def tweet_unlike(tweet_id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     return TweetUtil.unlike_tweet(db=db, user_id=user_id, tweet_id=tweet_id)
 

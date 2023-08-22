@@ -9,7 +9,7 @@ from DBHelper import get_db
 from UtilityTools.HeaderSupport import get_current_user
 from UtilityTools.twoFAUtil import twoFAUTIL
 
-router = APIRouter(tags=['Auth Related'], prefix='/api/v1')
+router = APIRouter(tags=['Authentication'], prefix='/api/v1')
 
 
 @router.post("/user/register", response_model= RegistrationOutputModel)
