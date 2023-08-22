@@ -60,6 +60,15 @@ def tweet_unlike(tweet_id: int, db: Session = Depends(get_db), user_id: str = De
 def tweet_search(query: str, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     return TweetUtil.search_tweets(db=db, keyword=query)
 
+@router.get("/tweet/loadall", response_model=List[TweetSmallDescOutput])
+def tweet_load_all(db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
+    return TweetUtil.load_tweets(db=db)
+
+
 @router.post("/tweet/comment/{tweet_id}", response_model=CreateTweetOutputModel)
 def tweet_comment(tweet_id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user), new_tweet :CreateTweetInputModel = Body(...)):
     return TweetUtil.create_tweet_comment(db=db, user_id=user_id, tweet_id=tweet_id, new_tweet=new_tweet)
+
+@router.delete("/tweet/comment/{comment_id}")
+def tweet_comment_delete(comment_id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
+    return TweetUtil.delete_tweet_comment(db=db, user_id=user_id, comment_id=comment_id)

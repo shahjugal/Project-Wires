@@ -21,11 +21,11 @@ def profile_edit(db: Session = Depends(get_db), new_data: EditProfileInputModel 
     # except Exception as exception:
     #     raise HTTPException(detail=str(exception), status_code=404)
 
-@router.get("/profile/retrieve/{usernameOrIDOrEmail}", response_model=RetrieveProfileOutput)
-def profile_retrieve(usernameOrIDOrEmail: str, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
+@router.get("/profile/retrieve/{id}", response_model=RetrieveProfileOutput)
+def profile_retrieve(id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
         """Used to retrieve prfile data of any user with his full follower list following list and set of tweets he(or she ☕) posted."""
     # try:
-        new_profile = Profile.retrieve_user_profile(db=db, identifier=usernameOrIDOrEmail)
+        new_profile = Profile.retrieve_user_profile(db=db, identifier=id)
         return new_profile
     # except Exception as exception:
     #     raise HTTPException(detail=str(exception), status_code=404)

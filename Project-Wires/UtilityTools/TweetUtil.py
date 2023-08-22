@@ -158,3 +158,37 @@ class TweetUtil:
         db.commit()
         db.refresh(tweet)
         return CreateTweetOutputModel.model_validate(tweet)
+    
+    @staticmethod
+    def delete_tweet_comment(db: Session, user_id: int, comment_id: int):
+        existing_retweet = db.query(Tweet).filter_by(id=comment_id).first()
+        if(existing_retweet is None or existing_retweet.parent_tweet_id is None):
+            raise HTTPException(detail="Comment do not exist", status_code=400)
+        if(existing_retweet.author_id != user_id):
+            raise HTTPException(detail="Not sufficient permission.", status_code=401) 
+        db.delete(existing_retweet)
+        db.commit()
+        return
+    
+    @staticmethod
+    def load_tweets(db: Session):
+        tweets_unprocessed = db.query(Tweet).all()
+        tweets:List[TweetSmallDescOutput] = []
+        if(len(tweets_unprocessed)==0):
+            raise HTTPException("No tweets found.", status_code=400)
+
+        for tweet in tweets_unprocessed:
+                tweet_user = UserSmallDescOutput.model_validate(Profile.getUserObjectFromId(db=db, id=tweet.author_id))
+                tweet = TweetSmallDescOutput(
+                    id=tweet.id,
+                    author=tweet_user,
+                    parent_tweet_id=tweet.parent_tweet_id,
+                    created_at=tweet.created_at,
+                    like_count=db.query(Like).filter_by(tweet_id=tweet.id).count(),
+                    comment_count=db.query(Tweet).filter_by(parent_tweet_id=tweet.id).count(),
+                    retweet_count=db.query(Retweet).filter_by(tweet_id=tweet.id).count(),
+                    content=tweet.content
+                )
+                tweets.append(tweet)
+        
+        return tweets

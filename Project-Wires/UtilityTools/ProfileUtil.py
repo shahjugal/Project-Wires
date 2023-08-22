@@ -44,11 +44,7 @@ class Profile:
     @staticmethod
     def retrieve_user_profile(db: Session, identifier: int) -> UserDetailedOutput:
         
-        user = db.query(User).filter_by(username=identifier).first()
-        if user is None:
-            user = db.query(User).filter_by(email=identifier).first()
-        if user is None and identifier.isnumeric():
-            user = db.query(User).filter_by(id=int(identifier)).first()
+        user = db.query(User).filter_by(id=int(identifier)).first()
             
         if user is None:
             raise HTTPException(detail="User not found with given query string", status_code=404)

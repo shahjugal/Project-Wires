@@ -22,7 +22,7 @@ app = FastAPI(title="Project Wires",
               #description="This is twitter's educational clone made by BhattMohit25 and JugalShah. (We are not like zukku making commercial clones)", 
               summary="API Documentation authored by Jugal Shah",
               docs_url='/api/v1/docs',
-              description="All API starts with /api/v1/" ,
+              description="Wires is a student network" ,
               terms_of_service="https://opensource.org/license/gpl-3-0/",
               redoc_url='/'
               )
