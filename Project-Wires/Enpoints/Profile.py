@@ -13,6 +13,8 @@ router = APIRouter(tags=['Profile Related'], prefix='/api/v1')
 # Profile Operations
 @router.put("/profile/edit/", response_model=EditProfileOutputModel)
 def profile_edit(db: Session = Depends(get_db), new_data: EditProfileInputModel = Body(...), user_id: str = Depends(get_current_user)) -> EditProfileOutputModel:
+        """Used to edit prfile data."""
+
     # try:
         new_profile = Authentication.edit_profile(db=db, new_data=new_data,user_id=user_id)
         return new_profile
@@ -21,6 +23,7 @@ def profile_edit(db: Session = Depends(get_db), new_data: EditProfileInputModel 
 
 @router.get("/profile/retrieve/{usernameOrIDOrEmail}", response_model=RetrieveProfileOutput)
 def profile_retrieve(usernameOrIDOrEmail: str, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
+        """Used to retrieve prfile data of any user with his full follower list following list and set of tweets he(or she ☕) posted."""
     # try:
         new_profile = Profile.retrieve_user_profile(db=db, identifier=usernameOrIDOrEmail)
         return new_profile
@@ -29,6 +32,7 @@ def profile_retrieve(usernameOrIDOrEmail: str, db: Session = Depends(get_db), us
 
 @router.post("/profile/follow/{id}")
 def profile_follow(id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
+        """Used to follow passed user."""
     # try:
         Profile.follow_user(db=db, followee_id=id, follower_id=user_id)
         return 
@@ -37,6 +41,7 @@ def profile_follow(id: int, db: Session = Depends(get_db), user_id: str = Depend
 
 @router.post("/profile/unfollow/{id}")
 def profile_unfollow(id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
+        """Used to un-follow passed user."""
     # try:
         Profile.unfollow_user(db=db, followee_id=id, follower_id=user_id)
         return 
@@ -45,4 +50,5 @@ def profile_unfollow(id: int, db: Session = Depends(get_db), user_id: str = Depe
 
 @router.get("/profile/search/{query}")
 def profile_search(query: str, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
+    """Used to search users from passed query."""
     return Profile.search_users(db=db, keyword=query)

@@ -13,6 +13,7 @@ router = APIRouter(tags=['Auth Related'], prefix='/api/v1')
 
 @router.post("/user/register", response_model= RegistrationOutputModel)
 def user_register(db: Session = Depends(get_db), new_user: RegisterInputModel = Body(...)):
+        """Register a new user."""
     # try:
         user = Authentication.sign_up(db=db, new_user=new_user)
         return user
@@ -21,6 +22,7 @@ def user_register(db: Session = Depends(get_db), new_user: RegisterInputModel = 
 
 @router.post("/user/login", response_model=LoginOutputModel)
 def user_login(db: Session = Depends(get_db), creds: LoginInputModel = Body(...)):
+        """Logs in a user."""
     # try:
         token = Authentication.sign_in(db=db, user_cred=creds)
         return token
@@ -37,6 +39,7 @@ def user_logout(db: Session = Depends(get_db)):
 
 @router.patch("/user/reset-password", response_model=PasswordResetOutputModel)
 def user_reset_password(db: Session = Depends(get_db), new_cred: PasswordResetInputModel = Body(...), user_id: str = Depends(get_current_user)):
+        """Resets password for a user."""
     # try:
         out = Authentication.password_reset(db=db, new_cred=new_cred, user_id=user_id)
         return out
@@ -45,13 +48,15 @@ def user_reset_password(db: Session = Depends(get_db), new_cred: PasswordResetIn
 
 @router.patch("/user/enable-2FA", response_model=Secret2FAOutputModel)
 def enable_2FA(db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
+    """Enables 2-Factor-Authentication for user and return url which can be scaned as QR for Google Authenticator or similar apps"""
     return Authentication.enable2FA(db=db, user_id=user_id)
     
-@router.get("user/verify-2FA", response_model=bool)
+@router.get("/user/verify-2FA", response_model=bool)
 def verify_2FA(db: Session = Depends(get_db), user_id: str = Depends(get_current_user), otp: twoFAInputModel = Body(...)):
+    """Used to validate a 2FA Code"""
     return Authentication.verify2FA(db=db, user_id=user_id, otp=otp.otp)
-
 
 @router.patch("/user/disable-2FA")
 def disable_2FA(db: Session = Depends(get_db), user_id: str = Depends(get_current_user), otp: twoFAInputModel = Body(...)):
+    """Disables 2-Factor-Authentication"""
     return Authentication.disable2FA(db=db, user_id=user_id, otp=otp.otp)
