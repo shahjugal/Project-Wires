@@ -27,8 +27,11 @@ class Authentication:
     @staticmethod
     def sign_up(db: Session, new_user: RegisterInputModel) -> RegistrationOutputModel:
         """Returns a user object on success"""
-        user_ByUsername = db.query(User).filter_by(username=new_user.username).first()
-        user_ByEmail = db.query(User).filter_by(email=new_user.email).first()
+        try:
+            user_ByUsername = db.query(User).filter_by(username=new_user.username).first()
+            user_ByEmail = db.query(User).filter_by(email=new_user.email).first()
+        except Exception as exception:
+            raise HTTPException(detail=str(exception), status_code=500)
         
         if(user_ByEmail):
             raise HTTPException(detail="Email not available", status_code=400)
@@ -38,18 +41,25 @@ class Authentication:
 
         hashed_password = Authentication.hash_password(new_user.password)
         new_user = User(first_name=new_user.first_name, last_name=new_user.last_name, username=new_user.username, email=new_user.email, profile_image=new_user.profile_image, password=hashed_password)
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
+        try:
+            db.add(new_user)
+            db.commit()
+            db.refresh(new_user)
+        except Exception as exception:
+            raise HTTPException(detail=str(exception), status_code=500)
         return RegistrationOutputModel.model_validate(new_user)
 
     @staticmethod
     def sign_in(db: Session, user_cred: LoginInputModel) -> LoginOutputModel:
         """Returns JWT Token on success."""
         hashed_password = Authentication.hash_password(user_cred.password)
-        user_ByUsername = db.query(User).filter_by(username=user_cred.emailOrUsername, password=hashed_password).first()
-        user_ByEmail = db.query(User).filter_by(email=user_cred.emailOrUsername, password=hashed_password).first()
-        
+
+        try:
+            user_ByUsername = db.query(User).filter_by(username=user_cred.emailOrUsername, password=hashed_password).first()
+            user_ByEmail = db.query(User).filter_by(email=user_cred.emailOrUsername, password=hashed_password).first()
+        except Exception as exception:
+            raise HTTPException(detail=str(exception), status_code=500)
+
         if user_ByUsername:
             token = TokenUtility.generate_token(user_ByUsername.id)
             if (user_ByUsername.secret_key is None):
