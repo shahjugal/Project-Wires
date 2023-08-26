@@ -57,7 +57,7 @@ def enable_2FA(db: Session = Depends(get_db), user_id: str = Depends(get_current
     """Enables 2-Factor-Authentication for user and return url which can be scaned as QR for Google Authenticator or similar apps"""
     return Authentication.enable2FA(db=db, user_id=user_id)
     
-@router.get("/user/verify-2FA", response_model=bool)
+@router.post("/user/verify-2FA", response_model=bool)
 def verify_2FA(db: Session = Depends(get_db), user_id: str = Depends(get_current_user), otp: twoFAInputModel = Body(...)):
     """Used to validate a 2FA Code"""
     return Authentication.verify2FA(db=db, user_id=user_id, otp=otp.otp)
