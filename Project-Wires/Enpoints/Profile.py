@@ -30,6 +30,15 @@ def profile_retrieve(id: int, db: Session = Depends(get_db), user_id: str = Depe
     # except Exception as exception:
     #     raise HTTPException(detail=str(exception), status_code=404)
 
+@router.get("/profile/retrieve/", response_model=RetrieveProfileOutput, include_in_schema=False)
+def profile_retrieve(db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
+        """Used to retrieve prfile data of any user with his full follower list following list and set of tweets he(or she ☕) posted."""
+    # try:
+        new_profile = Profile.retrieve_user_profile(db=db, identifier=user_id)
+        return new_profile
+    # except Exception as exception:
+    #     raise HTTPException(detail=str(exception), status_code=404)
+
 @router.post("/profile/follow/{id}")
 def profile_follow(id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
         """Used to follow passed user."""
