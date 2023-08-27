@@ -38,7 +38,7 @@ def tweet_read(tweet_id: int, db: Session = Depends(get_db), user_id: str = Depe
     return TweetUtil.read_tweet(db=db, tweet_id=tweet_id)
     
 
-@router.post("/tweet/retweet/{tweet_id}/", response_model=CreateTweetOutputModel)
+@router.post("/tweet/retweet/{tweet_id}/")
 def tweet_retweet(tweet_id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     return TweetUtil.retweet_tweet(db=db, user_id=user_id, tweet_id=tweet_id)
 
