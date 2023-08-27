@@ -15,7 +15,7 @@ class TokenUtility:
 
     @staticmethod
     def generate_token(user_id: int) -> str:
-        expiration = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+        expiration = datetime.datetime.utcnow() + datetime.timedelta(days=30)
         token = jwt.encode({"user_id": user_id, "exp": expiration}, SECRET_TOKEN_KEY, algorithm="HS256")
         return token
     
