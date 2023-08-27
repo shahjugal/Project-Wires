@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 router = APIRouter(tags=['Profile'], prefix='/api/v1')
 
 # Profile Operations
-@router.put("/profile/edit", response_model=EditProfileOutputModel)
+@router.put("/profile/edit/", response_model=EditProfileOutputModel)
 def profile_edit(db: Session = Depends(get_db), new_data: EditProfileInputModel = Body(...), user_id: str = Depends(get_current_user)) -> EditProfileOutputModel:
         """Used to edit prfile data."""
 
@@ -21,7 +21,7 @@ def profile_edit(db: Session = Depends(get_db), new_data: EditProfileInputModel 
     # except Exception as exception:
     #     raise HTTPException(detail=str(exception), status_code=404)
 
-@router.get("/profile/retrieve/{id}", response_model=RetrieveProfileOutput)
+@router.get("/profile/retrieve/{id}/", response_model=RetrieveProfileOutput)
 def profile_retrieve(id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
         """Used to retrieve prfile data of any user with his full follower list following list and set of tweets he(or she ☕) posted."""
     # try:
@@ -30,7 +30,7 @@ def profile_retrieve(id: int, db: Session = Depends(get_db), user_id: str = Depe
     # except Exception as exception:
     #     raise HTTPException(detail=str(exception), status_code=404)
 
-@router.get("/profile/retrieve", response_model=RetrieveProfileOutput, include_in_schema=False)
+@router.get("/profile/retrieve/", response_model=RetrieveProfileOutput, include_in_schema=False)
 def profile_retrieve(db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
         """Used to retrieve prfile data of any user with his full follower list following list and set of tweets he(or she ☕) posted."""
     # try:
@@ -39,7 +39,7 @@ def profile_retrieve(db: Session = Depends(get_db), user_id: str = Depends(get_c
     # except Exception as exception:
     #     raise HTTPException(detail=str(exception), status_code=404)
 
-@router.post("/profile/follow/{id}")
+@router.post("/profile/follow/{id}/")
 def profile_follow(id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
         """Used to follow passed user."""
     # try:
@@ -48,7 +48,7 @@ def profile_follow(id: int, db: Session = Depends(get_db), user_id: str = Depend
     # except Exception as exception:
     #     raise HTTPException(detail=str(exception), status_code=404)
 
-@router.delete("/profile/unfollow/{id}")
+@router.delete("/profile/unfollow/{id}/")
 def profile_unfollow(id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
         """Used to un-follow passed user."""
     # try:
@@ -57,7 +57,7 @@ def profile_unfollow(id: int, db: Session = Depends(get_db), user_id: str = Depe
     # except Exception as exception:
     #     raise HTTPException(detail=str(exception), status_code=404)
 
-@router.get("/profile/search/{query}")
+@router.get("/profile/search/{query}/")
 def profile_search(query: str, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     """Used to search users from passed query."""
     return Profile.search_users(db=db, keyword=query)
