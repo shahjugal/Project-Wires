@@ -100,6 +100,8 @@ class Authentication:
                 user.last_name = new_data.last_name
             if new_data.profile_image:
                 user.profile_image = new_data.profile_image
+            if new_data.bio:
+                user.bio = new_data.bio
             db.commit()
             return EditProfileOutputModel.model_validate(user)
         raise HTTPException(detail="User not found", status_code=404)
