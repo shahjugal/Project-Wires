@@ -11,6 +11,7 @@ class TokenHolder(BaseModel):
 class UserSmallDescOutput(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
+    bio: Optional[str] = None
     first_name: str
     username: str
     profile_image: Optional[str] = None
@@ -29,6 +30,7 @@ class TweetSmallDescOutput(BaseModel):
 class UserDetailedOutput(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
+    bio: Optional[str] = None
     first_name: str
     last_name: Optional[str] = None
     username: str
@@ -74,6 +76,7 @@ class RegistrationOutputModel(BaseModel):
     email: str
     profile_image: Optional[str] = None
     created_at: datetime
+    bio: Optional[str] = None
     
 
 ## Registration END
@@ -116,6 +119,7 @@ class EditProfileInputModel(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     profile_image: Optional[str] = None
+    bio: Optional[str] = None
 
 class EditProfileOutputModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -126,6 +130,7 @@ class EditProfileOutputModel(BaseModel):
     email: str
     profile_image: Optional[str] = None
     created_at: datetime
+    bio: Optional[str] = None
 
 ## Edit Profile END
 

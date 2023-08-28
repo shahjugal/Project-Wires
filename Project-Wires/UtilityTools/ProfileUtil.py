@@ -91,7 +91,9 @@ class Profile:
                                      follower_count=follower_count, 
                                      following_count=following_count, 
                                      followers=followers_processed, 
-                                     followings=followings_processed)
+                                     followings=followings_processed,
+                                     bio=user.bio
+                                     )
     
 
     
