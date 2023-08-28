@@ -98,7 +98,7 @@ class TweetUtil:
             db.add(new_like)
             db.commit()
             return
-        return HTTPException(detail="Either tweet dont exist you already liked it!", status_code=400)
+        raise HTTPException(detail="Either tweet dont exist you already liked it!", status_code=400)
 
     @staticmethod
     def unlike_tweet(db: Session, user_id: int, tweet_id: int):
@@ -107,7 +107,7 @@ class TweetUtil:
             db.delete(existing_like)
             db.commit()
             return 
-        return HTTPException(details="Either tweet dont exist you already un-liked it!", status_code=400)
+        raise HTTPException(detail="Either tweet dont exist you already un-liked it!", status_code=400)
 
     @staticmethod
     def retweet_tweet(db: Session, user_id: int, tweet_id: int):
@@ -117,7 +117,7 @@ class TweetUtil:
             db.add(new_retweet)
             db.commit()
             return 
-        raise HTTPException(details="Either tweet dont exist you already retweeted it!", status_code=400)
+        raise HTTPException(detail="Either tweet dont exist you already retweeted it!", status_code=400)
     
     @staticmethod
     def unretweet(db: Session, user_id: int, tweet_id: int):
@@ -126,7 +126,7 @@ class TweetUtil:
             db.delete(existing_retweet)
             db.commit()
             return 
-        raise HTTPException(details="Either tweet dont exist you already unretweeted it!", status_code=400)
+        raise HTTPException(detail="Either tweet dont exist you already unretweeted it!", status_code=400)
 
     @staticmethod
     def search_tweets(db: Session, keyword: str) -> List[TweetSmallDescOutput]:
