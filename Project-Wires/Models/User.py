@@ -8,7 +8,7 @@ class User(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=True)
     username = Column(String, nullable=False)
-    bio = Column(String, nullable=False, default=None)
+    bio = Column(String, nullable=True, default=None)
     email = Column(String, unique=True, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'), nullable=False)
     modified_at = Column(TIMESTAMP(timezone=True), server_default=text('now()') , nullable=False)
