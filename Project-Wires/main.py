@@ -16,7 +16,7 @@ from UtilityTools.TokenUtility import TokenUtility
 from DBHelper import engine, Base
 from Enpoints import Authentication as authEP, Profile as profEP, Tweet as tweetEP
 from DBHelper import get_db
-app = FastAPI(title="Project Wires", 
+app = FastAPI(title="Wires Student Network", 
               version="0.0.1", 
               contact={'Developer': 'Jugal'}, 
               #description="This is twitter's educational clone made by BhattMohit25 and JugalShah. (We are not like zukku making commercial clones)", 

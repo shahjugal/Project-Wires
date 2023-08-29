@@ -121,10 +121,10 @@ class Profile:
     def search_users(db: Session, keyword: str) -> List[UserSmallDescOutput]:
         keyword = keyword.lower()
         users = db.query(User).filter(
-            User.username.match(keyword) |
-            User.email.match(keyword) |
-            User.first_name.match(keyword) |
-            User.last_name.match(keyword)
+            User.username.contains(keyword) |
+            User.email.contains(keyword) |
+            User.first_name.contains(keyword) |
+            User.last_name.contains(keyword)
         ).all()
         print(len(users))
         if(len(users) == 0):
