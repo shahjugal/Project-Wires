@@ -40,8 +40,7 @@ def user_login(db: Session = Depends(get_db), creds: LoginInputModel = Body(...)
 
 @router.post("/user/logout/", deprecated=True)
 def user_logout(db: Session = Depends(get_db)):
-    """Currently this is not working. heheh logout me clear cache karvadena bhai apne ko kya lena dena he
-    security check to karenge nai ki token expired hua ki nai lol.
+    """Moved from server-side session management to client side tokens hence logout is no more needed.
     """
     # Implement user logout logic here
     pass
@@ -85,7 +84,7 @@ def enable_2FA(db: Session = Depends(get_db), user_id: str = Depends(get_current
 
 @router.post("/user/verify-2FA/", response_model=bool)
 def verify_2FA(db: Session = Depends(get_db), user_id: str = Depends(get_current_user), otp: twoFAInputModel = Body(...)):
-    """Used to validate a 2FA Code"""
+    """Used to validate a 2FA Code."""
     try:
         return Authentication.verify2FA(db=db, user_id=user_id, otp=otp.otp)
     except HTTPException as http_exception:
@@ -97,7 +96,7 @@ def verify_2FA(db: Session = Depends(get_db), user_id: str = Depends(get_current
 
 @router.patch("/user/disable-2FA/")
 def disable_2FA(db: Session = Depends(get_db), user_id: str = Depends(get_current_user), otp: twoFAInputModel = Body(...)):
-    """Disables 2-Factor-Authentication"""
+    """Disables 2-Factor-Authentication."""
     try:
         return Authentication.disable2FA(db=db, user_id=user_id, otp=otp.otp)
     except HTTPException as http_exception:
