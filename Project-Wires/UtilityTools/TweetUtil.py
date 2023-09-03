@@ -1,5 +1,6 @@
 from typing import List
 from fastapi import HTTPException
+from sqlalchemy import desc
 from Models.User import User
 from Models.Tweet import Tweet
 from Models.Follower import Follower
@@ -188,7 +189,7 @@ class TweetUtil:
     
     @staticmethod
     def load_tweets(db: Session, user_id: int):
-        tweets_unprocessed = db.query(Tweet).filter_by(parent_tweet_id = None).all()
+        tweets_unprocessed = db.query(Tweet).filter_by(parent_tweet_id = None).order_by(desc(Tweet.id)).all()
         tweets:List[TweetSmallDescOutput] = []
         if(len(tweets_unprocessed)==0):
             raise HTTPException("No tweets found.", status_code=400)
