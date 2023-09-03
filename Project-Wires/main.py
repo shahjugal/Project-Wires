@@ -14,7 +14,7 @@ from UtilityTools.TweetUtil import TweetUtil
 from UtilityTools.ProfileUtil import Profile
 from UtilityTools.TokenUtility import TokenUtility
 from DBHelper import engine, Base
-from Enpoints import Authentication as authEP, Profile as profEP, Tweet as tweetEP
+from Enpoints import Authentication as authEP, Profile as profEP, Tweet as tweetEP, Token as tokenEP
 from DBHelper import get_db
 app = FastAPI(title="Wires Student Network", 
               version="0.0.1", 
@@ -44,6 +44,7 @@ app.add_middleware(
 app.include_router(authEP.router)
 app.include_router(profEP.router)
 app.include_router(tweetEP.router)
+app.include_router(tokenEP.router)
 
 Base.metadata.create_all(bind=engine)
 
