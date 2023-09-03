@@ -26,6 +26,9 @@ class TweetSmallDescOutput(BaseModel):
     comment_count: int
     parent_tweet_id: Optional[int] = None
     content: str
+    isLikedByMe: bool
+    isCommentedOnByMe: bool
+    isRetweetedByMe: bool
 
 class UserDetailedOutput(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -52,6 +55,10 @@ class TweetDetailedOutput(BaseModel):
     comment_count: int
     parent_tweet_id: Optional[int] = None
     comment_tweets: List[TweetSmallDescOutput]
+    content: str
+    isLikedByMe: bool
+    isCommentedOnByMe: bool
+    isRetweetedByMe: bool
 
 
 

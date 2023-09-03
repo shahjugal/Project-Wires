@@ -49,7 +49,7 @@ class TweetUtil:
         
 
     @staticmethod
-    def read_tweet(db: Session, tweet_id: int) -> TweetDetailedOutput:
+    def read_tweet(db: Session, tweet_id: int, user_id: int) -> TweetDetailedOutput:
         tweet = db.query(Tweet).filter_by(id=tweet_id).first()
         if tweet:
             user = UserSmallDescOutput.model_validate(Profile.getUserObjectFromId(db=db, id=tweet.author_id))
@@ -59,6 +59,10 @@ class TweetUtil:
             like_count=db.query(Like).filter_by(tweet_id=tweet.id).count()
             comment_count=len(comments_unprocessed)
             retweet_count=db.query(Retweet).filter_by(tweet_id=tweet.id).count()
+
+            isLikedByMe = (db.query(Like).filter_by(tweet_id=tweet_id, user_id = user_id).count()>0)
+            isCommentedOnByMe = (db.query(Tweet).filter_by(parent_tweet_id=tweet_id, author_id = user_id).count()>0)
+            isRetweetedByMe = (db.query(Retweet).filter_by(tweet_id=tweet_id, user_id = user_id).count()>0)
 
             for comment in comments_unprocessed:
                 comment_user = UserSmallDescOutput.model_validate(Profile.getUserObjectFromId(db=db, id=comment.author_id))
@@ -70,7 +74,10 @@ class TweetUtil:
                     like_count=db.query(Like).filter_by(tweet_id=comment.id).count(),
                     comment_count=db.query(Tweet).filter_by(parent_tweet_id=comment.id).count(),
                     retweet_count=db.query(Retweet).filter_by(tweet_id=comment.id).count(),
-                    content=comment.content
+                    content=comment.content,
+                    isLikedByMe = (db.query(Like).filter_by(tweet_id=comment.id, user_id = user_id).count()>0),
+                    isCommentedOnByMe = (db.query(Tweet).filter_by(parent_tweet_id=comment.id, author_id = user_id).count()>0),
+                    isRetweetedByMe = (db.query(Retweet).filter_by(tweet_id=comment.id, user_id = user_id).count()>0),
                 )
                 comment_tweets.append(comment_tweet)
 
@@ -82,6 +89,10 @@ class TweetUtil:
                 created_at=tweet.created_at,
                 like_count=like_count,
                 retweet_count=retweet_count,
+                content = tweet.content,
+                isLikedByMe = isLikedByMe,
+                isCommentedOnByMe = isCommentedOnByMe,
+                isRetweetedByMe = isRetweetedByMe,
             )
 
 
@@ -129,7 +140,7 @@ class TweetUtil:
         raise HTTPException(detail="Either tweet dont exist you already unretweeted it!", status_code=400)
 
     @staticmethod
-    def search_tweets(db: Session, keyword: str) -> List[TweetSmallDescOutput]:
+    def search_tweets(db: Session, keyword: str, user_id: int) -> List[TweetSmallDescOutput]:
         tweets_unprocessed = db.query(Tweet).filter(Tweet.content.like(f"%{keyword}%")).all()
         tweets:List[TweetSmallDescOutput] = []
         if(len(tweets_unprocessed)==0):
@@ -145,7 +156,12 @@ class TweetUtil:
                     like_count=db.query(Like).filter_by(tweet_id=tweet.id).count(),
                     comment_count=db.query(Tweet).filter_by(parent_tweet_id=tweet.id).count(),
                     retweet_count=db.query(Retweet).filter_by(tweet_id=tweet.id).count(),
-                    content=tweet.content
+                    content=tweet.content,
+                    isLikedByMe = (db.query(Like).filter_by(tweet_id=tweet.id, user_id = user_id).count()>0),
+                    isCommentedOnByMe = (db.query(Tweet).filter_by(parent_tweet_id=tweet.id, author_id = user_id).count()>0),
+                    isRetweetedByMe = (db.query(Retweet).filter_by(tweet_id=tweet.id, user_id = user_id).count()>0),
+                
+                
                 )
                 tweets.append(tweet)
         
@@ -171,7 +187,7 @@ class TweetUtil:
         return
     
     @staticmethod
-    def load_tweets(db: Session):
+    def load_tweets(db: Session, user_id: int):
         tweets_unprocessed = db.query(Tweet).filter_by(parent_tweet_id = None).all()
         tweets:List[TweetSmallDescOutput] = []
         if(len(tweets_unprocessed)==0):
@@ -187,7 +203,11 @@ class TweetUtil:
                     like_count=db.query(Like).filter_by(tweet_id=tweet.id).count(),
                     comment_count=db.query(Tweet).filter_by(parent_tweet_id=tweet.id).count(),
                     retweet_count=db.query(Retweet).filter_by(tweet_id=tweet.id).count(),
-                    content=tweet.content
+                    content=tweet.content,
+                    isLikedByMe = (db.query(Like).filter_by(tweet_id=tweet.id, user_id = user_id).count()>0),
+                    isCommentedOnByMe = (db.query(Tweet).filter_by(parent_tweet_id=tweet.id, author_id = user_id).count()>0),
+                    isRetweetedByMe = (db.query(Retweet).filter_by(tweet_id=tweet.id, user_id = user_id).count()>0),
+                
                 )
                 tweets.append(tweet)
         

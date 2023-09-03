@@ -52,7 +52,7 @@ def tweet_update(tweet_id: int, db: Session = Depends(get_db), user_id: str = De
 @router.get("/tweet/read/{tweet_id}/", response_model=TweetDetailedOutput)
 def tweet_read(tweet_id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     try:
-        return TweetUtil.read_tweet(db=db, tweet_id=tweet_id)
+        return TweetUtil.read_tweet(db=db, tweet_id=tweet_id, user_id=user_id)
     except HTTPException as http_exception:
             # Rethrow the HTTP exception
         raise http_exception
@@ -107,7 +107,7 @@ def tweet_unlike(tweet_id: int, db: Session = Depends(get_db), user_id: str = De
 @router.get("/tweet/search/{query}/", response_model=List[TweetSmallDescOutput])
 def tweet_search(query: str, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     try:
-        return TweetUtil.search_tweets(db=db, keyword=query)
+        return TweetUtil.search_tweets(db=db, keyword=query,user_id=user_id)
     except HTTPException as http_exception:
             # Rethrow the HTTP exception
         raise http_exception
@@ -118,7 +118,7 @@ def tweet_search(query: str, db: Session = Depends(get_db), user_id: str = Depen
 @router.get("/tweet/loadall/", response_model=List[TweetSmallDescOutput])
 def tweet_load_all(db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     try:
-        return TweetUtil.load_tweets(db=db)
+        return TweetUtil.load_tweets(db=db,user_id=user_id)
     except HTTPException as http_exception:
             # Rethrow the HTTP exception
         raise http_exception
