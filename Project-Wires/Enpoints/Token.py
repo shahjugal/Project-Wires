@@ -10,7 +10,7 @@ from UtilityTools.HeaderSupport import get_current_user
 from UtilityTools.TokenUtility import TokenUtility
 from UtilityTools.twoFAUtil import twoFAUTIL
 
-router = APIRouter(tags=['Tag'], prefix='/api/v1/token')
+router = APIRouter(tags=['Token'], prefix='/api/v1/token')
 
 
 @router.post("/verify/", response_model= int)
