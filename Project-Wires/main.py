@@ -14,7 +14,7 @@ from UtilityTools.TweetUtil import TweetUtil
 from UtilityTools.ProfileUtil import Profile
 from UtilityTools.TokenUtility import TokenUtility
 from DBHelper import engine, Base
-from Enpoints import Authentication as authEP, Profile as profEP, Tweet as tweetEP, Token as tokenEP
+from Enpoints import AuthenticationEP as authEP, ProfileEP as profEP, TokenEP as tokenEP, TweetEP as tweetEP
 from DBHelper import get_db
 app = FastAPI(title="Wires Student Network", 
               version="0.0.1", 

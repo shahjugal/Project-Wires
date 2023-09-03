@@ -14,8 +14,8 @@ class TokenVerificationException(Exception):
 class TokenUtility:
 
     @staticmethod
-    def generate_token(user_id: int) -> str:
-        expiration = datetime.datetime.utcnow() + datetime.timedelta(days=30)
+    def generate_token(user_id: int, for_duration: datetime = datetime.timedelta(hours=2)) -> str:
+        expiration = datetime.datetime.utcnow() + for_duration
         token = jwt.encode({"user_id": user_id, "exp": expiration}, SECRET_TOKEN_KEY, algorithm="HS256")
         return token
     
