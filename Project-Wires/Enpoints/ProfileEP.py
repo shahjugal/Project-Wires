@@ -32,7 +32,7 @@ def profile_edit(db: Session = Depends(get_db), new_data: EditProfileInputModel 
 def profile_retrieve(id: int, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     """Used to retrieve prfile data of any user with his full follower list following list and set of tweets he(or she ☕) posted."""
     try:
-        new_profile = Profile.retrieve_user_profile(db=db, identifier=id)
+        new_profile = Profile.retrieve_user_profile(db=db, identifier=id, user_id = user_id)
         return new_profile
     except HTTPException as http_exception:
             # Rethrow the HTTP exception

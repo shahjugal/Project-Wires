@@ -42,7 +42,7 @@ class Profile:
         return output
 
     @staticmethod
-    def retrieve_user_profile(db: Session, identifier: int) -> UserDetailedOutput:
+    def retrieve_user_profile(db: Session, identifier: int, user_id: int) -> UserDetailedOutput:
         
         user = db.query(User).filter_by(id=int(identifier)).first()
             
@@ -74,7 +74,11 @@ class Profile:
                                         retweet_count=retweet_count, 
                                         like_count=like_count, 
                                         comment_count=comment_count,
-                                        parent_tweet_id=tweet.parent_tweet_id
+                                        parent_tweet_id=tweet.parent_tweet_id,
+                                        isLikedByMe = (db.query(Like).filter_by(tweet_id=tweet.id, user_id = user_id).count()>0),
+                                        isCommentedOnByMe = (db.query(Tweet).filter_by(parent_tweet_id=tweet.id, author_id = user_id).count()>0),
+                                        isRetweetedByMe = (db.query(Retweet).filter_by(tweet_id=tweet.id, user_id = user_id).count()>0),
+                
                                         )
 
             tweets.append(temp)
