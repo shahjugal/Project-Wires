@@ -44,6 +44,7 @@ class UserDetailedOutput(BaseModel):
     following_count: int
     followers: List[UserSmallDescOutput]
     followings: List[UserSmallDescOutput]
+    amIFollowing: bool
 
 class TweetDetailedOutput(BaseModel):
     model_config = ConfigDict(from_attributes=True)

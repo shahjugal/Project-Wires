@@ -60,7 +60,7 @@ class Profile:
         tweets = []
         followings_processed = [UserSmallDescOutput.model_validate(following) for following in followings]
         followers_processed= [UserSmallDescOutput.model_validate(follower) for follower in followers]
-
+        amIFollowing = (db.query(Follower).filter_by(follower_id=user_id, followee_id = identifier).count() > 0 )
         smalldesc = UserSmallDescOutput.model_validate(user)
 
         for tweet in tweet_raw:
@@ -96,7 +96,8 @@ class Profile:
                                      following_count=following_count, 
                                      followers=followers_processed, 
                                      followings=followings_processed,
-                                     bio=user.bio
+                                     bio=user.bio,
+                                     amIFollowing = amIFollowing,
                                      )
     
 
