@@ -106,30 +106,30 @@ def disable_2FA(db: Session = Depends(get_db), user_id: str = Depends(get_curren
         # If another exception occurs, raise a custom HTTPException with a 500 status code
         raise HTTPException(status_code=500, detail=str(e))
     
-@router.get("/user/forgotten-password/", tags=['[Authentication]Coming Soon'])
+@router.get("/user/forgotten-password/", summary="Coming soon",deprecated=True)
 def get_password_reset_mail(db: Session = Depends(get_db), ):
     """
     This will soon send mail to user with their password reset link.
     """
-    pass
+    raise HTTPException(500, detail="API is Temporarily withdrawn for maintainence.")
 
-@router.post("/user/forgotten-password/", tags=['[Authentication]Coming Soon'])
+@router.post("/user/forgotten-password/", summary="Coming soon",deprecated=True)
 def set_password_using_hex(db: Session = Depends(get_db), hex_code: str = Query(...), password: str = Body(...)):
     """
     This will allow to reset user password with given hex code and new password if its valid and not expired.
     """
-    pass
+    raise HTTPException(500, detail="API is Temporarily withdrawn for maintainence.")
 
-@router.get("/user/verify-account/", tags=['[Authentication]Coming Soon'])
+@router.get("/user/verify-account/", summary="Coming soon",deprecated=True)
 def get_account_verification_mail(db: Session = Depends(get_db), user_id: str = Depends(get_current_user),):
     """
     This will soon send mail to user to verify their account.
     """
-    pass
+    raise HTTPException(500, detail="API is Temporarily withdrawn for maintainence.")
 
-@router.post("/user/verify-account/", tags=['[Authentication]Coming Soon'])
+@router.post("/user/verify-account/", summary="Coming soon",deprecated=True)
 def veridy_account_using_hex(db: Session = Depends(get_db), hex_code: str = Query(...)):
     """
     This will allow to verify account with hex code if its valid and not expired.
     """
-    pass
+    raise HTTPException(500, detail="API is Temporarily withdrawn for maintainence.")
