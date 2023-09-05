@@ -1,5 +1,6 @@
 from ast import List
-from fastapi import APIRouter, Body, Depends, HTTPException
+from typing import Optional
+from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from PyDanticModels import RetrieveProfileOutput, TokenHolder, UserDetailedOutput, EditProfileInputModel, EditProfileOutputModel, UserSmallDescOutput
 from UtilityTools.AuthenticationUtil import Authentication
 from DBHelper import get_db
@@ -81,8 +82,8 @@ def profile_unfollow(id: int, db: Session = Depends(get_db), user_id: str = Depe
         # If another exception occurs, raise a custom HTTPException with a 500 status code
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/profile/search/{query}/")
-def profile_search(query: str, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
+@router.get("/profile/search/")
+def profile_search(query: Optional[str] = Query(default=None), db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     """Used to search users from passed query."""
     try:
         return Profile.search_users(db=db, keyword=query)

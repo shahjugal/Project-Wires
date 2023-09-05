@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import HTTPException
 from Models.Likes import Like
@@ -123,15 +123,19 @@ class Profile:
         raise HTTPException(detail="Already Not Following!", status_code=400)
 
     @staticmethod
-    def search_users(db: Session, keyword: str) -> List[UserSmallDescOutput]:
-        keyword = keyword.lower()
-        users = db.query(User).filter(
-            User.username.contains(keyword) |
-            User.email.contains(keyword) |
-            User.first_name.contains(keyword) |
-            User.last_name.contains(keyword)
-        ).all()
-        print(len(users))
+    def search_users(db: Session, keyword: Optional[str] = None) -> List[UserSmallDescOutput]:
+        
+        if keyword is not None:
+            keyword = keyword.lower()
+            users = db.query(User).filter(
+                User.username.contains(keyword) |
+                User.email.contains(keyword) |
+                User.first_name.contains(keyword) |
+                User.last_name.contains(keyword)
+            ).all()
+            print(len(users))
+        else:
+            users = db.query(User).all()
         
         users_final = [UserSmallDescOutput.model_validate(user) for user in users]
         return users_final
