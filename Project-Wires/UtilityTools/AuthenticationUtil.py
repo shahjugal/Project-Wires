@@ -61,7 +61,7 @@ class Authentication:
                 return LoginOutputModel(token=token)
             else:
                 if user_cred.otp is None:
-                    raise HTTPException(detail="2FA Code Needed", status_code=400)
+                    return LoginOutputModel(requries_2fa=True)
                 elif twoFAUTIL.verify(secret=user_ByUsername.secret_key, OTP=user_cred.otp):
                     return LoginOutputModel(token=token)
                 else:
@@ -74,7 +74,7 @@ class Authentication:
                 return LoginOutputModel(token=token)
             else:
                 if user_cred.otp is None:
-                    raise HTTPException(detail="2FA Code Needed", status_code=400)
+                    return LoginOutputModel(requries_2fa=True)
                 elif twoFAUTIL.verify(secret=user_ByEmail.secret_key, OTP=user_cred.otp):
                     return LoginOutputModel(token=token)
                 else:

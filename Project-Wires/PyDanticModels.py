@@ -99,7 +99,8 @@ class LoginInputModel(BaseModel):
 
 class LoginOutputModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    token: str
+    token: Optional[str] = None
+    requries_2fa: Optional[bool] = None
 
 ## Sign in END
 
