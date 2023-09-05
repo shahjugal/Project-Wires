@@ -189,8 +189,6 @@ class TweetUtil:
     def load_tweets(db: Session, user_id: int):
         tweets_unprocessed = db.query(Tweet).filter_by(parent_tweet_id = None).order_by(desc(Tweet.id)).all()
         tweets:List[TweetSmallDescOutput] = []
-        if(len(tweets_unprocessed)==0):
-            raise HTTPException("No tweets found.", status_code=400)
 
         for tweet in tweets_unprocessed:
                 tweet_user = UserSmallDescOutput.model_validate(Profile.getUserObjectFromId(db=db, id=tweet.author_id))
