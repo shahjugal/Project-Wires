@@ -132,8 +132,6 @@ class Profile:
             User.last_name.contains(keyword)
         ).all()
         print(len(users))
-        if(len(users) == 0):
-            raise HTTPException(detail="No users found", status_code=404)
         
         users_final = [UserSmallDescOutput.model_validate(user) for user in users]
         return users_final
