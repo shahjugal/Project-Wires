@@ -144,8 +144,6 @@ class TweetUtil:
     def search_tweets(db: Session, keyword: str, user_id: int) -> List[TweetSmallDescOutput]:
         tweets_unprocessed = db.query(Tweet).filter(Tweet.content.like(f"%{keyword}%")).all()
         tweets:List[TweetSmallDescOutput] = []
-        if(len(tweets_unprocessed)==0):
-            raise HTTPException("No tweets found matching provided keyword.", status_code=400)
 
         for tweet in tweets_unprocessed:
                 tweet_user = UserSmallDescOutput.model_validate(Profile.getUserObjectFromId(db=db, id=tweet.author_id))
