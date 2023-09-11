@@ -151,7 +151,7 @@ def get_account_verification_mail(background_tasks: BackgroundTasks, db: Session
         # If another exception occurs, raise a custom HTTPException with a 500 status code
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.patch("/user/verify-account/", summary="New!!!")
+@router.get("/user/verify-account/", summary="New!!!")
 def verify_account_using_hex(request: Request, db: Session = Depends(get_db), hex_code: str = Query(...),):
     """
     This will allow to verify account with hex code if its valid and not expired.
