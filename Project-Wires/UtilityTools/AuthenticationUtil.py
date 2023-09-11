@@ -44,7 +44,7 @@ class Authentication:
 
         hashed_password = Authentication.hash_password(new_user.password)
         new_user = User(first_name=new_user.first_name, last_name=new_user.last_name, username=new_user.username, email=new_user.email, profile_image=new_user.profile_image, password=hashed_password)
-        EmailSender().send_welcome_mail(name=(new_user.first_name + ' ' + new_user.last_name),
+        EmailSender().send_welcome_mail(name=new_user.first_name,
                                         recipient_email=new_user.email, bg= bg)
 
         db.add(new_user)

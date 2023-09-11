@@ -23,6 +23,7 @@ class EmailSender:
             MAIL_PASSWORD = SENDER_PASSWORD,
             MAIL_FROM = SENDER_EMAIL,
             MAIL_PORT = PORT,
+            MAIL_FROM_NAME="Jugal (From WSN)",
             MAIL_SERVER = HOST,
             MAIL_STARTTLS = True,
             MAIL_SSL_TLS = False,
