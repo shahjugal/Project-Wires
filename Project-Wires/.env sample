@@ -1,1 +1,13 @@
-export DB_URL = <>
+export SECRET_TOKEN_KEY = 
+export SECRET_SALT_KEY = 
+
+export SECRET_RESET_KEY = 
+
+export SECRET_VERIFY_KEY = 
+
+export DB_URL  = 
+
+export SENDER_EMAIL =
+export SENDER_PASSWORD = 
+
+export API_BASE_URL = 

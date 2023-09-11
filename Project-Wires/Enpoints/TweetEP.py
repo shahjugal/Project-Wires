@@ -9,10 +9,12 @@ from PyDanticModels import CreateTweetInputModel, CreateTweetOutputModel, TweetD
 from UtilityTools.TweetUtil import TweetUtil
 
 from UtilityTools.HeaderSupport import get_current_user
+from middleware.APIKEYMiddleWare import ApiKeyMiddleware
+
+
 
 
 router = APIRouter(tags=['Post'], prefix='/api/v1')
-
 # Tweet Operations
 @router.post("/tweet/create/", response_model= CreateTweetOutputModel)
 def tweet_create(db: Session = Depends(get_db), user_id: str = Depends(get_current_user), new_tweet :CreateTweetInputModel = Body(...)):

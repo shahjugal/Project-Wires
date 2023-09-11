@@ -1,13 +1,17 @@
+import datetime
 import hashlib
 import os
 from typing import Optional
 from dotenv import load_dotenv
 
-from fastapi import HTTPException
+from fastapi import BackgroundTasks, HTTPException
 from Models.User import User
 from sqlalchemy.orm import Session
 
 from PyDanticModels import EditProfileInputModel, EditProfileOutputModel, PasswordResetInputModel, PasswordResetOutputModel, RegisterInputModel, RegistrationOutputModel, LoginInputModel, LoginOutputModel, Secret2FAOutputModel, twoFAInputModel
+from UtilityTools.EmailDevice import EmailSender
+from UtilityTools.ResetKey import ResetKeyUtility
+from UtilityTools.VerificationKeyUtility import VerificationKeyUtility
 from UtilityTools.twoFAUtil import twoFAUTIL
 from .TokenUtility import TokenUtility
 
@@ -178,4 +182,60 @@ class Authentication:
                 return
             else:
                 raise HTTPException(detail="Wrong 2FA Code", status_code=400)
+            
+    @staticmethod
+    def send_verification_mail(db: Session, user_id: int, background_tasks: BackgroundTasks) -> str:
+        """Send Email Verification"""
+        BASE_URL = os.environ.get("API_BASE_URL")
+        JOIN_URL = "api/v1/user/verify-account/?hex_code="
+        user: User = db.query(User).filter_by(id=user_id).first()
+        if user is None:
+            raise HTTPException(detail="User not found", status_code=404)
+        if user.isVerified:
+            raise HTTPException(detail="Already Verified", status_code=404)
+        key:str = VerificationKeyUtility.generate_key(user.id)
+        url: str = BASE_URL + JOIN_URL + key
+        EmailSender().send_verification_mail(name=user.first_name,
+                                        recipient_email=user.email, bg= background_tasks, link=url)
+    
         
+    @staticmethod
+    def send_password_reset_mail(db: Session, email: str, background_tasks: BackgroundTasks) -> str:
+        """Send Password Reset Email"""
+        BASE_URL = os.environ.get("API_BASE_URL")
+        JOIN_URL = "api/v1/user/verify-account/?hex_code="
+        user: User = db.query(User).filter_by(email=email).first()
+        if user is None:
+            raise HTTPException(detail="User not found", status_code=404)
+        
+        key:str = ResetKeyUtility.generate_key(user_id=user.id)
+        print(key)
+        EmailSender().send_reset_password_mail(name=user.first_name,
+                                        recipient_email=user.email, bg= background_tasks, link="__" + key + "__")
+    
+       
+        
+    @staticmethod
+    def verify_account(db: Session, key: str) -> str:
+        """Send Password Reset Email"""
+        id:int = VerificationKeyUtility.verify_key(key)
+        user: User = db.query(User).filter_by(id=id).first()
+        if user is None:
+            raise HTTPException(detail="User not found", status_code=404)
+        if user.isVerified:
+            raise HTTPException(detail="Already Verified", status_code=404)
+        user.isVerified = True
+        db.commit()
+        return "Verified Successfully"
+    
+    @staticmethod
+    def reset_password(db: Session, new_password: str, key: str) -> None:
+        """Send Password Reset Email"""
+        id:int = ResetKeyUtility.verify_key(key)
+        user: User = db.query(User).filter_by(id=id).first()
+        if user is None:
+            raise HTTPException(detail="User not found", status_code=404)
+        hashed_password = Authentication.hash_password(new_password)
+        user.password = hashed_password
+        db.commit()
+        return None

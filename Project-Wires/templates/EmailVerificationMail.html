@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email</title>
+    <!-- Include Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8 px-4 rounded-t-lg">
+            <img src="https://wires-student-network.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fwires%20logo%202%20no%20bg.42d59fcb.png&w=828&q=75" alt="Wire Logo" class="mx-auto mb-4" style="max-width: 150px;">
+            <h1 class="text-3xl font-bold text-center">Verify Your Email</h1>
+        </div>
+        <div class="bg-white shadow-lg rounded-b-lg py-8 px-6">
+            <p class="text-lg text-gray-700">Dear {{ name }},</p>
+            <p class="text-lg text-gray-700">Thank you for requesting verification with Wires. To complete your verification, please click the button below.</p>
+            <a href="{{ link }}" class="btn bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 px-6 rounded-full mt-8 inline-block font-semibold text-lg transition hover:opacity-75">Verify Account</a>
+            <p class="text-lg text-gray-700 mt-4">If you have any questions or need assistance, don't hesitate to contact our support team at YetToBeDeclared@gmail.com.</p>
+            
+        </div>
+        <div class="mt-8 text-gray-500 text-sm text-center">
+            <p class="mb-2">You are receiving this email because you recently requested verification with Wires. If you didn't, please change your password as security measure.</p>
+            <p>&copy; 2023 Wires, Inc. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

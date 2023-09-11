@@ -9,6 +9,9 @@ from UtilityTools.ProfileUtil import Profile
 from UtilityTools.TokenUtility import TokenUtility
 from sqlalchemy.orm import Session
 
+from middleware.APIKEYMiddleWare import ApiKeyMiddleware
+
+
 router = APIRouter(tags=['Profile'], prefix='/api/v1')
 
 # Profile Operations

@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import Session
 from Models.User import User
@@ -16,6 +16,9 @@ from UtilityTools.TokenUtility import TokenUtility
 from DBHelper import engine, Base
 from Enpoints import AuthenticationEP as authEP, ProfileEP as profEP, TokenEP as tokenEP, TweetEP as tweetEP
 from DBHelper import get_db
+from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
+
+from middleware.APIKEYMiddleWare import ApiKeyMiddleware
 app = FastAPI(title="Wires Student Network", 
               version="0.0.1", 
               contact={'Developer': 'Jugal'}, 

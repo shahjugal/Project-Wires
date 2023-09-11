@@ -9,6 +9,7 @@ from DBHelper import get_db
 from UtilityTools.HeaderSupport import get_current_user
 from UtilityTools.TokenUtility import TokenUtility
 from UtilityTools.twoFAUtil import twoFAUTIL
+from middleware.APIKEYMiddleWare import ApiKeyMiddleware
 
 router = APIRouter(tags=['Token'], prefix='/api/v1/token')
 
