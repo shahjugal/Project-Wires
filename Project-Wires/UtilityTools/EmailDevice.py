@@ -34,7 +34,7 @@ class EmailSender:
         try:
             dataVars = {
                 "name":name,
-                "link":"wires.onrender.com"
+                "link":"project-wires.web.app"
             }
 
             message = MessageSchema(

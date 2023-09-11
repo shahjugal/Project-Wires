@@ -17,9 +17,8 @@ router = APIRouter(tags=['Authentication'], prefix='/api/v1')
 def user_register(background_tasks: BackgroundTasks, db: Session = Depends(get_db), new_user: RegisterInputModel = Body(...)):
     """Register a new user."""
     try:
-        user = Authentication.sign_up(db=db, new_user=new_user)
-        EmailSender().send_welcome_mail(name=(new_user.first_name + ' ' + new_user.last_name),
-                                        recipient_email=new_user.email, bg= background_tasks)
+        user = Authentication.sign_up(db=db, new_user=new_user, bg=background_tasks)
+        
         return user
     except HTTPException as http_exception:
             # Rethrow the HTTP exception
