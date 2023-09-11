@@ -40,7 +40,9 @@ origins = [
     "https://wires-student-network.vercel.app",
 ]
 
-allowed_hosts = ["render.com",
+allowed_hosts = ["*.render.com",
+                 "wires.onrender.com",
+                 "render.com"
                  "project-wires.web.app",
                  "wires-student-network.vercel.app",
                  "localhost",
