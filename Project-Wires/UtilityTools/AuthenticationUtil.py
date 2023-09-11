@@ -46,12 +46,12 @@ class Authentication:
         new_user = User(first_name=new_user.first_name, last_name=new_user.last_name, username=new_user.username, email=new_user.email, profile_image=new_user.profile_image, password=hashed_password)
         EmailSender().send_welcome_mail(name=(new_user.first_name + ' ' + new_user.last_name),
                                         recipient_email=new_user.email, bg= bg)
-        
-        Authentication.send_verification_mail(db=db, background_tasks=bg, user_id=new_user.id)
 
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
+        
+        Authentication.send_verification_mail(db=db, background_tasks=bg, user_id=new_user.id)
         return RegistrationOutputModel.model_validate(new_user)
 
     @staticmethod
