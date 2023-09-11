@@ -38,23 +38,7 @@ origins = [
     "https://project-wires.web.app",
     "https://project-wires.web.app",
     "https://wires-student-network.vercel.app",
-    "*"
 ]
-
-allowed_hosts = ["*.render.com",
-                 "wires.onrender.com",
-                 "render.com"
-                 "project-wires.web.app",
-                 "wires-student-network.vercel.app",
-                 "localhost",
-                 "localhost:8080",
-                 "106.201.241.26",
-                 "127.0.0.1:8000",
-                 ]
-
-app.add_middleware(
-    TrustedHostMiddleware, allowed_hosts=allowed_hosts
-)
 
 app.add_middleware(
     CORSMiddleware,
