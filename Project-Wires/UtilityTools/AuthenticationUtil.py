@@ -208,15 +208,16 @@ class Authentication:
     def send_password_reset_mail(db: Session, email: str, background_tasks: BackgroundTasks) -> str:
         """Send Password Reset Email"""
         BASE_URL = os.environ.get("API_BASE_URL")
-        JOIN_URL = "api/v1/user/verify-account/?hex_code="
+        JOIN_URL = "reset_password/?hex_code="
         user: User = db.query(User).filter_by(email=email).first()
         if user is None:
             raise HTTPException(detail="User not found", status_code=404)
         
         key:str = ResetKeyUtility.generate_key(user_id=user.id)
+        url:str = BASE_URL + JOIN_URL + key
         print(key)
         EmailSender().send_reset_password_mail(name=user.first_name,
-                                        recipient_email=user.email, bg= background_tasks, link="__" + key + "__")
+                                        recipient_email=user.email, bg= background_tasks, link=url)
     
        
         

@@ -1,4 +1,6 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import Session
 from Models.User import User
@@ -10,6 +12,7 @@ from Models.Retweets import Retweet
 from sqlalchemy.orm import sessionmaker
 from PyDanticModels import CreateTweetInputModel, RegisterInputModel
 from UtilityTools.AuthenticationUtil import Authentication
+from UtilityTools.ResetKey import ResetKeyUtility
 from UtilityTools.TweetUtil import TweetUtil
 from UtilityTools.ProfileUtil import Profile
 from UtilityTools.TokenUtility import TokenUtility
@@ -52,6 +55,35 @@ app.include_router(authEP.router)
 app.include_router(profEP.router)
 app.include_router(tweetEP.router)
 app.include_router(tokenEP.router)
+
+templates = Jinja2Templates(directory="templates")
+@app.get("/reset_password/", response_class=HTMLResponse)
+async def reset_password(request: Request, hex_code: str = None):
+    if hex_code is None:
+        return templates.TemplateResponse(
+            "PasswordResetForm.html",
+            {"request": request, "error_message" : "Invalid Link"}
+        )
+    user_id: int | None = None
+    try:    
+        user_id = ResetKeyUtility.verify_key(token=hex_code)
+    except HTTPException as e:
+        return templates.TemplateResponse(
+            "PasswordResetForm.html",
+            {"request": request, "error_message" : e.detail}
+        )
+
+    if user_id is None:
+        return templates.TemplateResponse(
+            "PasswordResetForm.html",
+            {"request": request, "error_message" : "Invalid or Expired Link"}
+        )
+
+
+    return templates.TemplateResponse(
+        "PasswordResetForm.html",
+        {"request": request, "hex_code": hex_code}
+    )
 
 Base.metadata.create_all(bind=engine)
 
