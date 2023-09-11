@@ -38,6 +38,7 @@ origins = [
     "https://project-wires.web.app",
     "https://project-wires.web.app",
     "https://wires-student-network.vercel.app",
+    "*"
 ]
 
 allowed_hosts = ["*.render.com",
