@@ -19,6 +19,7 @@ from DBHelper import get_db
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 
 from middleware.APIKEYMiddleWare import ApiKeyMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 app = FastAPI(title="Wires Student Network", 
               version="0.0.1", 
               contact={'Developer': 'Jugal'}, 
@@ -33,8 +34,24 @@ app = FastAPI(title="Wires Student Network",
 origins = [
     "http://localhost",
     "http://localhost:8080",
-    "*"
+    "https://wires.onrender.com",
+    "https://project-wires.web.app",
+    "https://project-wires.web.app",
+    "https://wires-student-network.vercel.app",
 ]
+
+allowed_hosts = ["render.com",
+                 "project-wires.web.app",
+                 "wires-student-network.vercel.app",
+                 "localhost",
+                 "localhost:8080",
+                 "106.201.241.26",
+                 "127.0.0.1:8000",
+                 ]
+
+app.add_middleware(
+    TrustedHostMiddleware, allowed_hosts=allowed_hosts
+)
 
 app.add_middleware(
     CORSMiddleware,
