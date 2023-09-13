@@ -57,6 +57,11 @@ app.include_router(tweetEP.router)
 app.include_router(tokenEP.router)
 
 templates = Jinja2Templates(directory="templates")
+
+@app.get("/ping")
+async def ping():
+    return {"response" : "OK"}
+
 @app.get("/reset_password/", response_class=HTMLResponse)
 async def reset_password(request: Request, hex_code: str = None):
     if hex_code is None:
