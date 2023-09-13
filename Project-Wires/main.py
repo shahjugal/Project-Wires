@@ -60,7 +60,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/ping", include_in_schema=False)
 async def ping():
-    return null
+    return None
 
 @app.get("/reset_password/", response_class=HTMLResponse)
 async def reset_password(request: Request, hex_code: str = None):
