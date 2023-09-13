@@ -9,6 +9,7 @@ SQLALCHEMY_DATABASE_URL = os.environ.get("DB_URL")
 
 engine = create_engine(url=
     SQLALCHEMY_DATABASE_URL,
+    pool_pre_ping=True, pool_recycle=300
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
