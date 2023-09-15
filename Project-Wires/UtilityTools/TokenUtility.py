@@ -52,7 +52,7 @@ class TokenUtility:
                 # Token is still valid, generate a new one
                 return TokenUtility.generate_token(payload['user_id'])
             else:
-                raise HTTPException("Token has expired")
+                raise HTTPException(status_code=401, detail="Renewal window is surpassed.")
         
         except Exception as e:
             raise e
