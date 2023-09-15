@@ -28,7 +28,7 @@ def verify_token(token: TokenHolder = Body(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/renew/", response_model= str)
-def verify_token(token: TokenHolder = Body(...)):
+def renew_token(token: TokenHolder = Body(...)):
     """Renews token if token is in 30 min window"""
     try:
         new_token = TokenUtility.renew_token(token=token.token)
