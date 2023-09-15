@@ -27,3 +27,15 @@ def verify_token(token: TokenHolder = Body(...)):
         # If another exception occurs, raise a custom HTTPException with a 500 status code
         raise HTTPException(status_code=500, detail=str(e))
 
+@router.post("/renew/", response_model= str)
+def verify_token(token: TokenHolder = Body(...)):
+    """Renews token if token is in 10 min window"""
+    try:
+        new_token = TokenUtility.renew_token(token=token.token)
+        return new_token
+    except HTTPException as http_exception:
+            # Rethrow the HTTP exception
+        raise http_exception
+    except Exception as e:
+        # If another exception occurs, raise a custom HTTPException with a 500 status code
+        raise HTTPException(status_code=500, detail=str(e))
