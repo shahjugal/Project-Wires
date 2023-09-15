@@ -29,7 +29,7 @@ def verify_token(token: TokenHolder = Body(...)):
 
 @router.post("/renew/", response_model= str)
 def verify_token(token: TokenHolder = Body(...)):
-    """Renews token if token is in 10 min window"""
+    """Renews token if token is in 30 min window"""
     try:
         new_token = TokenUtility.renew_token(token=token.token)
         return new_token

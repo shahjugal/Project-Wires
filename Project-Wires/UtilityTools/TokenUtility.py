@@ -14,7 +14,7 @@ class TokenVerificationException(Exception):
 class TokenUtility:
 
     @staticmethod
-    def generate_token(user_id: int, for_duration: datetime = datetime.timedelta(hours=1)) -> str:
+    def generate_token(user_id: int, for_duration: datetime = datetime.timedelta(hours=2)) -> str:
         expiration = datetime.datetime.utcnow() + for_duration
         token = jwt.encode({"user_id": user_id, "exp": expiration}, SECRET_TOKEN_KEY, algorithm="HS256")
         return token
@@ -25,7 +25,7 @@ class TokenUtility:
             # Decode the JWT token
             payload = jwt.decode(
                 token,
-                TokenUtility.SECRET_TOKEN_KEY,
+                SECRET_TOKEN_KEY,
                 algorithms=["HS256"],
                 options={
                     'verify_signature': True,
@@ -41,7 +41,7 @@ class TokenUtility:
             exp_time = int(payload["exp"])
 
             # margin window 
-            allowed_window = datetime.timedelta(minutes=10)
+            allowed_window = datetime.timedelta(minutes=30)
 
             # Calculate the expiration threshold (10 mins ago)
             expiration_threshold = now - allowed_window.total_seconds()
