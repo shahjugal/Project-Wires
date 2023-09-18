@@ -40,7 +40,7 @@ origins = [
     "https://wires.onrender.com",
     "https://project-wires.web.app",
     "https://project-wires.web.app",
-    #"https://wires-student-network.vercel.app",
+    "https://wires-student-network.vercel.app",
 ]
 
 app.add_middleware(
