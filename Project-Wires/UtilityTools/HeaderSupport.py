@@ -8,7 +8,7 @@ class client(Enum):
     MOBILE_APP = 2
     EXTERNAL_SERVICE = 3
 
-def get_current_user(token: str = Header(None)) -> int:
+def get_current_user(token: str = Header(..., title="JWT Token", description="The token you got when called login api.", example="eABC.^&C.)_V")) -> int:
     if not token:
         raise HTTPException(status_code=401, detail="Unauthorized: Missing token")
     
