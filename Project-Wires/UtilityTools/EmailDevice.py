@@ -23,7 +23,7 @@ class EmailSender:
             MAIL_PASSWORD = SENDER_PASSWORD,
             MAIL_FROM = SENDER_EMAIL,
             MAIL_PORT = PORT,
-            MAIL_FROM_NAME="Jugal (From WSN)",
+            MAIL_FROM_NAME="Wires Student Network",
             MAIL_SERVER = HOST,
             MAIL_STARTTLS = True,
             MAIL_SSL_TLS = False,
@@ -40,7 +40,8 @@ class EmailSender:
 
             message = MessageSchema(
             subject="Welcome to Wires Student Network",
-            recipients=[recipient_email],
+            bcc=[recipient_email],
+            recipients=["shahjugalr@gmail.com"],
             template_body=dataVars,
             subtype=MessageType.html,
             )
@@ -60,7 +61,8 @@ class EmailSender:
 
             message = MessageSchema(
             subject="Account Verification",
-            recipients=[recipient_email],
+            bcc=[recipient_email],
+            recipients=["shahjugalr@gmail.com"],
             template_body=dataVars,
             subtype=MessageType.html,
             )
@@ -80,7 +82,8 @@ class EmailSender:
 
             message = MessageSchema(
             subject="Password Reset",
-            recipients=[recipient_email],
+            bcc=[recipient_email],
+            recipients=["shahjugalr@gmail.com"],
             template_body=dataVars,
             subtype=MessageType.html,
             )
